@@ -1,0 +1,37 @@
+prefix RO: <http://purl.obolibrary.org/obo/RO_> .
+prefix CHEBI: <http://purl.obolibrary.org/obo/CHEBI_> .
+prefix NCBITaxon: <http://purl.obolibrary.org/obo/NCBITaxon_> .
+prefix chemrof <https://chemkg.github.io/chemrof/> .
+prefix oboInOwl <http://www.geneontology.org/formats/oboInOwl#> .
+prefix rdfs <http://www.w3.org/2000/01/rdf-schema#> .
+prefix owl <http://www.w3.org/2002/07/owl#> .
+prefix ex <https://example.com/> .
+
+RO:0002233 a owl:AnnotationProperty;
+    rdfs:label "has input" .
+
+RO:0002234 a owl:AnnotationProperty;
+    rdfs:label "has output" .
+
+NCBITaxon:303 a owl:Class ;
+    rdfs:label "Pseudomonas putida" .
+
+CHEBI:53259 a owl:Class ;
+    rdfs:label "poly(ethylene terephthalate) macromolecule" ;
+    oboInOwl:hasExactSynonym "PET" .
+
+CHEBI:231672 a owl:Class ;
+    rdfs:label "bis(2-hydroxyethyl) terephthalate" ;
+    oboInOwl:hasExactSynonym "BHET" .
+
+[] a chemrof:Reaction ;
+    rdfs:comment "PET to bis(2-hydroxyethyl) terephthalate (BHET)" ;
+    RO:0002233 CHEBI:53259 ;
+    RO:0002234 CHEBI:231672 .
+
+# TODO get example of catalyst for this reaction
+# TODO get eacmple of biological process that
+#  does this
+
+ex:ModifiedPutida owl:subClassOf NCBITaxon:303 ;
+    ex:canConsume CHEBI:53259 .
