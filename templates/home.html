@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Catalaix Knowledge Graph</h1>
+
+<h2>Groups</h2>
+<p>See <a href="https://catalaix.com/en/team/">the official team page.</a></p>
+{{ labs.to_html(classes="table table-hover table-striped") | safe }}
+
+<h2>Reactions</h2>
+{{ reactions.to_html(classes="table table-hover table-striped") | safe }}
+
+{% endblock %}

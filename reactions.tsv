@@ -1,0 +1,4 @@
+input	input name	reagent	reagent name	output	output name	type	type name	desc.	catalyst	catalyst name	group
+CHEBI:53259	PET	CHEBI:30742	ethylene glycol	CHEBI:231672	BHET	MOP:0000787	transesterification	inorganic catalysis	???	???	Herres-Pawlis
+CHEBI:53259	PET	CHEBI:17790	methanol	CHEBI:156286	DMT	MOP:0000623	methanolysis	inorganic catalysis	???	???	Herres-Pawlis
+CHEBI:231672	BHET			CHEBI:53259	PET	MOP:0000644	polycondensation	???	???	???	Herres-Pawlis
