@@ -21,7 +21,7 @@ IMG = HERE.joinpath("img")
 OUT = HERE.joinpath("graph.png")
 
 
-def main() -> None:
+def main(add_reagent: bool = False) -> None:
     df = pd.read_csv(
         HERE.joinpath("reactions.tsv"),
         sep="\t",
@@ -41,14 +41,19 @@ def main() -> None:
         for pairs in [
             ["input", "input name"],
             ["output", "output name"],
+            ["output 2", "output 2 name"],
+            ["reagent", "reagent name"],
             ["catalyst", "catalyst name"],
         ]
         for curie, name in df[pairs].values
         if pd.notna(curie)
     }
-    add_node_for = {
-        curie for curies in df[["input", "output"]].values for curie in curies
-    }
+
+    keep = ["input", "output", "output 2"]
+    if add_reagent:
+        keep.append("reagent")
+
+    add_node_for = {curie for curies in df[keep].values for curie in curies}
 
     imgs = {}
     for chebi_curie, name in chebi_curies.items():
@@ -70,7 +75,7 @@ def main() -> None:
         imgs[chebi_id] = png_path
         if chebi_curie in add_node_for:
             node_attrs = dict(
-                label=name,
+                label=name if pd.notna(name) else "???",
                 image=png_path,
                 labelloc="b",
                 shape="box",
@@ -80,8 +85,8 @@ def main() -> None:
             graph.add_node(chebi_curie, **node_attrs)
 
     r = 1
-    for inp, out, catalyst, typen in df[
-        ["input", "output", "catalyst name", "type name"]
+    for inp, out, reagent, out2, catalyst, typen in df[
+        ["input", "output", "reagent", "output 2", "catalyst name", "type name"]
     ].values:
         label_parts = []
         if pd.notna(typen):
@@ -94,6 +99,10 @@ def main() -> None:
         graph.add_node(r, label=label, shape="box")
         graph.add_edge(inp, r)
         graph.add_edge(r, out)
+        if add_reagent and pd.notna(reagent):
+            graph.add_edge(reagent, r)
+        if pd.notna(out2):
+            graph.add_edge(r, out2)
         r += 1
 
     graph.draw(OUT, prog="dot")
