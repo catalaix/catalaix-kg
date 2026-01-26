@@ -20,3 +20,8 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 19	PET	CHEBI:156286	DMT			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://doi.org/10.1002/jctb.7035
 20	PET	CHEBI:15702	TPA	CHEBI:30742	ethylene glycol	CHEBI:53259	PET			MOP:0000644	polycondensation		https://doi.org/10.1039/D5SU00316D
 21	PET	CHEBI:156286	DMT	CHEBI:30742	ethylene glycol	CHEBI:53259	PET			MOP:0000644	polycondensation		https://doi.org/10.1039/D5SU00316D
+22	PET	CHEBI:15702	TPA			CHEBI:231672	BHET				esterification		https://doi.org/10.1002/cssc.202100400
+23	PET	CHEBI:53259	PET	CHEBI:28938	ammonium	CHEBI:38802	terephthalamide			MOP:0000621	aminolysis		https://doi.org/10.1002/cssc.202100400
+24	PET	CHEBI:38802	terephthalamide			cas:623-26-7	terephthalonitrile			MOP:0000569	reduction		https://doi.org/10.1002/cssc.202100400
+25	PET	cas:623-26-7	terephthalonitrile			cas:539-48-0	p-xylenediamine 			MOP:0000589	hydrogenation		https://doi.org/10.1002/cssc.202100400
+26	PET	cas:623-26-7	terephthalonitrile			cas:2549-93-1	1,4-bis(aminomethyl)cyclohexane			MOP:0000589	hydrogenation

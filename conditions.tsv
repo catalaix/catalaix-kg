@@ -5,3 +5,6 @@ reaction	type	catalyst	catalyst name	chemist	chemist name	group	group name	refer
 7	inorganic catalysis		Zn(DMEG2ch)2	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
 7	microbe		PETase					https://doi.org/10.1016/j.synbio.2025.07.013
 12	microbe		MHETase					https://doi.org/10.1016/j.synbio.2025.07.013
+10	inorganic catalysis	CHEBI:82289	Sb₂O₃					https://doi.org/10.1002/cssc.202100400
+10	inorganic catalysis		Sb(OAc)₃					https://doi.org/10.1002/cssc.202100400
+23	inorganic catalysis	CHEBI:62984	zinc acetate					https://doi.org/10.1002/cssc.202100400

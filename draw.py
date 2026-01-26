@@ -48,7 +48,7 @@ def main(add_reagent: bool = False) -> None:
         ["reaction", "type", "group"]
     ].values:
         reaction_to_group_names[reaction][reaction_type].add(
-            lab_id_to_name[group] if pd.notna(group) else "external"
+            lab_id_to_name[group] if pd.notna(group) else "External Group"
         )
 
     graph = pgv.AGraph(directed=True)
@@ -60,7 +60,7 @@ def main(add_reagent: bool = False) -> None:
         }
     )
 
-    chebi_curies = {
+    curies = {
         curie: name
         for pairs in [
             ["input", "input name"],
@@ -78,38 +78,37 @@ def main(add_reagent: bool = False) -> None:
 
     add_node_for = {curie for curies in reactions_df[keep].values for curie in curies}
 
-    imgs = {}
-    for chebi_curie, name in chebi_curies.items():
-        chebi_id = chebi_curie.removeprefix("CHEBI:")
-        svg_path = IMG.joinpath(f"chebi_{chebi_id}.svg")
-        png_path = IMG.joinpath(f"chebi_{chebi_id}.png")
-        url = f"https://www.ebi.ac.uk/chebi/backend/api/public/compound/{chebi_id}/structure/?width=300&height=300"
-        if not svg_path.is_file():
-            download(url, svg_path)
-        if not png_path.is_file():
-            cairosvg.svg2png(
-                url=svg_path.as_posix(),
-                write_to=png_path.as_posix(),
-                output_width=256,  # optional
-                output_height=256,  # optional
-                scale=3.125,
-            )
-
-        imgs[chebi_id] = png_path
-        if chebi_curie in add_node_for:
+    for curie, name in curies.items():
+        if not curie.startswith("CHEBI:"):
+            png_path = None
+        else:
+            chebi_id = curie.removeprefix("CHEBI:")
+            svg_path = IMG.joinpath(f"chebi_{chebi_id}.svg")
+            png_path = IMG.joinpath(f"chebi_{chebi_id}.png")
+            url = f"https://www.ebi.ac.uk/chebi/backend/api/public/compound/{chebi_id}/structure/?width=300&height=300"
+            if not svg_path.is_file():
+                download(url, svg_path)
+            if not png_path.is_file():
+                cairosvg.svg2png(
+                    url=svg_path.as_posix(),
+                    write_to=png_path.as_posix(),
+                    output_width=256,  # optional
+                    output_height=256,  # optional
+                    scale=3.125,
+                )
+        if curie in add_node_for:
             node_attrs = dict(
                 label=name if pd.notna(name) else "???",
-                image=png_path,
                 labelloc="b",
                 shape="box",
-                # imagescale="true",
-                # imagepos="tc",
             )
-            if chebi_curie in HIGHLIGHT:
+            if png_path is not None:
+                node_attrs["image"] = png_path
+            if curie in HIGHLIGHT:
                 node_attrs.update(
                     color="blue"  # border color
                 )
-            graph.add_node(chebi_curie, **node_attrs)
+            graph.add_node(curie, **node_attrs)
 
     for (
         reaction_id,
@@ -127,9 +126,8 @@ def main(add_reagent: bool = False) -> None:
         if type_to_groups := reaction_to_group_names.get(reaction_id):
             for rtype, groups in type_to_groups.items():
                 groups_text = ",".join(sorted(groups))
-                label_parts.append(f"{rtype}: {groups_text}")
-        else:
-            label_parts.append("(external)")
+                label_parts.append(f"{rtype} ({groups_text})")
+
         label = "\n".join(label_parts)
 
         graph.add_node(reaction_id, label=label, shape="box")
