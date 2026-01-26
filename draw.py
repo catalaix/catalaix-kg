@@ -43,9 +43,13 @@ def main(add_reagent: bool = False) -> None:
         group_id: professor.split(" ", maxsplit=1)[1]
         for group_id, professor in labs_df[["group", "Professor"]].values
     }
-    reaction_to_group_names = defaultdict(set)
-    for reaction, group in conditions_df[["reaction", "group"]].values:
-        reaction_to_group_names[reaction].add(lab_id_to_name[group])
+    reaction_to_group_names = defaultdict(lambda: defaultdict(set))
+    for reaction, reaction_type, group in conditions_df[
+        ["reaction", "type", "group"]
+    ].values:
+        reaction_to_group_names[reaction][reaction_type].add(
+            lab_id_to_name[group] if pd.notna(group) else "external"
+        )
 
     graph = pgv.AGraph(directed=True)
     graph.graph_attr["rankdir"] = "LR"
@@ -120,8 +124,10 @@ def main(add_reagent: bool = False) -> None:
         label_parts = []
         if pd.notna(reaction_type):
             label_parts.append(reaction_type)
-        if groups := reaction_to_group_names.get(reaction_id):
-            label_parts.append("(" + ",".join(sorted(groups)) + ")")
+        if type_to_groups := reaction_to_group_names.get(reaction_id):
+            for rtype, groups in type_to_groups.items():
+                groups_text = ",".join(sorted(groups))
+                label_parts.append(f"{rtype}: {groups_text}")
         else:
             label_parts.append("(external)")
         label = "\n".join(label_parts)

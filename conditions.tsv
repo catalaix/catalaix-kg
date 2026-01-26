@@ -1,5 +1,7 @@
-reaction	catalyst	catalyst name	chemist	chemist name	group	group name	references
-6	CHEBI:747215	ZnCl₂(TMGeech)		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
-7	CHEBI:747215	ZnCl₂(TMGeech)		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
-6		Zn(DMEG2ch)2	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
-7		Zn(DMEG2ch)2	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
+reaction	type	catalyst	catalyst name	chemist	chemist name	group	group name	references
+6	inorganic catalysis	CHEBI:747215	ZnCl₂(TMGeech)		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
+7	inorganic catalysis	CHEBI:747215	ZnCl₂(TMGeech)		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
+6	inorganic catalysis		Zn(DMEG2ch)2	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
+7	inorganic catalysis		Zn(DMEG2ch)2	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
+7	microbe		PETase					https://doi.org/10.1016/j.synbio.2025.07.013
+12	microbe		MHETase					https://doi.org/10.1016/j.synbio.2025.07.013
