@@ -12,8 +12,8 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 11	PET	CHEBI:231672	BHET			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://onlinelibrary.wiley.com/doi/10.1002/jobm.202000053
 12	PET	CHEBI:53259	PET			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://doi.org/10.1002/anie.202117528
 13	PET	CHEBI:156286	DMT	CHEBI:18276	H₂	CHEBI:747241	DMCD			MOP:0000589	hydrogenation		https://doi.org/10.1039/D4SU00658E
-14	PET	CHEBI:30742	ethylene glycol	CHEBI:747242	arylboronic acid	CHEBI:747243	arylboronic ester						https://doi.org/10.1039/D4SU00658E
-15	PET	CHEBI:30742	ethylene glycol	CHEBI:36596	dimethyl carbonate	CHEBI:178725	ethylene carbonate						https://doi.org/10.1039/D4SU00658E
+14	PET	CHEBI:30742	ethylene glycol	CHEBI:747242	arylboronic acid	CHEBI:747243	arylboronic ester				boronic esterification		https://doi.org/10.1039/D4SU00658E
+15	PET	CHEBI:30742	ethylene glycol	CHEBI:36596	dimethyl carbonate	CHEBI:178725	ethylene carbonate				esterification		https://doi.org/10.1039/D4SU00658E
 16	PET	CHEBI:15702	TPA			CHEBI:30746	benzoic acid			MOP:0001713	decarboxylation		https://doi.org/10.1039/D4SU00658E
 17	PET	CHEBI:30742	ethylene glycol			CHEBI:15343	acetaldehyde			MOP:0000628	dehydration		https://doi.org/10.1039/D4SU00658E
 18	PET	CHEBI:747241	DMCD			CHEBI:747245	CHDM				hydrogenolysis		https://doi.org/10.1016/j.cej.2024.157249

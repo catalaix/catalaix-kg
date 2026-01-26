@@ -33,7 +33,7 @@ HIGHLIGHT = {
 }
 
 
-def main(add_reagent: bool = False) -> None:
+def main(add_reagent: bool = False, group_closed_loop: bool = False) -> None:
     reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
     reactions_df = reactions_df[reactions_df["kingdom"] == "PET"]
 
@@ -77,6 +77,11 @@ def main(add_reagent: bool = False) -> None:
         keep.append("reagent")
 
     add_node_for = {curie for curies in reactions_df[keep].values for curie in curies}
+
+    if group_closed_loop:
+        sub = graph.add_subgraph(name="cluster_0", label="Closed Loop", color="blue")
+        for node in HIGHLIGHT:
+            sub.add_node(node)
 
     for curie, name in curies.items():
         if not curie.startswith("CHEBI:"):
@@ -137,6 +142,9 @@ def main(add_reagent: bool = False) -> None:
             graph.add_edge(reactant_2, reaction_id)
         if pd.notna(product_2):
             graph.add_edge(reaction_id, product_2)
+
+        if group_closed_loop and reactant_1 in HIGHLIGHT and product_1 in HIGHLIGHT:
+            sub.add_node(reaction_id)
 
     graph.draw(OUT, prog="dot")
 
