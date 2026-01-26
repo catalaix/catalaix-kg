@@ -1,1 +1,3 @@
 # catalaix-kg
+
+![](graph.png)

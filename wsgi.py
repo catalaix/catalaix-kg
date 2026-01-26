@@ -27,5 +27,5 @@ def get_home() -> str:
     return flask.render_template("home.html", labs=labs_df, reactions=reactions_df)
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5004, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5004, debug=True)

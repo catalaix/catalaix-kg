@@ -1,4 +1,9 @@
-input	input name	reagent	reagent name	output	output name	type	type name	desc.	catalyst	catalyst name	group
-CHEBI:53259	PET	CHEBI:30742	ethylene glycol	CHEBI:231672	BHET	MOP:0000787	transesterification	inorganic catalysis	???	???	Herres-Pawlis
-CHEBI:53259	PET	CHEBI:17790	methanol	CHEBI:156286	DMT	MOP:0000623	methanolysis	inorganic catalysis	???	???	Herres-Pawlis
-CHEBI:231672	BHET			CHEBI:53259	PET	MOP:0000644	polycondensation	???	???	???	Herres-Pawlis
+input	input name	reagent	reagent name	output	output name	type	type name	desc.	TRL (technology readiness level)	catalyst	catalyst name	group
+CHEBI:53259	PET	CHEBI:30742	ethylene glycol	CHEBI:231672	BHET	MOP:0000787	transesterification	inorganic catalysis	academic	CHEBI:747215	ZnCl₂(TMGeech)	Herres-Pawlis
+CHEBI:53259	PET	CHEBI:17790	methanol	CHEBI:156286	DMT	MOP:0000623	methanolysis	inorganic catalysis	academic	CHEBI:747215	ZnCl₂(TMGeech)	Herres-Pawlis
+CHEBI:231672	BHET			CHEBI:53259	PET	MOP:0000644	polycondensation	chemical catalysis (already on industry scale)	industrial		???
+CHEBI:53407	PLA			CHEBI:83221	methyl lactate
+CHEBI:83221	methyl lactate			CHEBI:177651	lactide	MOP:0000787
+CHEBI:83221	methyl lactate			CHEBI:78320	lactic acid	MOP:0000619	hydrolysis
+CHEBI:78320	2-hydroxypropanoic acid			CHEBI:177651	lactide
+CHEBI:177651		lactide		CHEBI:53407	PLA
