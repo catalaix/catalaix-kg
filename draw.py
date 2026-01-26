@@ -10,6 +10,8 @@
 
 """Create a diagram with the reaction network."""
 
+from collections import defaultdict
+
 import pandas as pd
 from pathlib import Path
 from pystow.utils import download
@@ -19,13 +21,31 @@ import cairosvg
 HERE = Path(__file__).parent.resolve()
 IMG = HERE.joinpath("img")
 OUT = HERE.joinpath("graph.png")
+REACTIONS_PATH = HERE.joinpath("reactions.tsv")
+CONDITIONS_PATH = HERE.joinpath("conditions.tsv")
+LABS_PATH = HERE.joinpath("labs.tsv")
+
+HIGHLIGHT = {
+    "CHEBI:53259",  # PET
+    "CHEBI:231672",  # BHET
+    "CHEBI:156286",  # DMT
+    "CHEBI:15702",  # TPA
+}
 
 
 def main(add_reagent: bool = False) -> None:
-    df = pd.read_csv(
-        HERE.joinpath("reactions.tsv"),
-        sep="\t",
-    )
+    reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
+    reactions_df = reactions_df[reactions_df["kingdom"] == "PET"]
+
+    conditions_df = pd.read_csv(CONDITIONS_PATH, sep="\t")
+    labs_df = pd.read_csv(LABS_PATH, sep="\t")
+    lab_id_to_name = {
+        group_id: professor.split(" ", maxsplit=1)[1]
+        for group_id, professor in labs_df[["group", "Professor"]].values
+    }
+    reaction_to_group_names = defaultdict(set)
+    for reaction, group in conditions_df[["reaction", "group"]].values:
+        reaction_to_group_names[reaction].add(lab_id_to_name[group])
 
     graph = pgv.AGraph(directed=True)
     graph.graph_attr["rankdir"] = "LR"
@@ -43,9 +63,8 @@ def main(add_reagent: bool = False) -> None:
             ["output", "output name"],
             ["output 2", "output 2 name"],
             ["reagent", "reagent name"],
-            ["catalyst", "catalyst name"],
         ]
-        for curie, name in df[pairs].values
+        for curie, name in reactions_df[pairs].values
         if pd.notna(curie)
     }
 
@@ -53,7 +72,7 @@ def main(add_reagent: bool = False) -> None:
     if add_reagent:
         keep.append("reagent")
 
-    add_node_for = {curie for curies in df[keep].values for curie in curies}
+    add_node_for = {curie for curies in reactions_df[keep].values for curie in curies}
 
     imgs = {}
     for chebi_curie, name in chebi_curies.items():
@@ -82,28 +101,38 @@ def main(add_reagent: bool = False) -> None:
                 # imagescale="true",
                 # imagepos="tc",
             )
+            if chebi_curie in HIGHLIGHT:
+                node_attrs.update(
+                    color="blue"  # border color
+                )
             graph.add_node(chebi_curie, **node_attrs)
 
-    r = 1
-    for inp, out, reagent, out2, catalyst, typen in df[
-        ["input", "output", "reagent", "output 2", "catalyst name", "type name"]
+    for (
+        reaction_id,
+        reactant_1,
+        reactant_2,
+        product_1,
+        product_2,
+        reaction_type,
+    ) in reactions_df[
+        ["reaction", "input", "reagent", "output", "output 2", "type name"]
     ].values:
         label_parts = []
-        if pd.notna(typen):
-            label_parts.append(typen)
-        if pd.notna(catalyst):
-            label_parts.append(f"catalyzed by {catalyst}")
-
+        if pd.notna(reaction_type):
+            label_parts.append(reaction_type)
+        if groups := reaction_to_group_names.get(reaction_id):
+            label_parts.append("(" + ",".join(sorted(groups)) + ")")
+        else:
+            label_parts.append("(external)")
         label = "\n".join(label_parts)
 
-        graph.add_node(r, label=label, shape="box")
-        graph.add_edge(inp, r)
-        graph.add_edge(r, out)
-        if add_reagent and pd.notna(reagent):
-            graph.add_edge(reagent, r)
-        if pd.notna(out2):
-            graph.add_edge(r, out2)
-        r += 1
+        graph.add_node(reaction_id, label=label, shape="box")
+        graph.add_edge(reactant_1, reaction_id)
+        graph.add_edge(reaction_id, product_1)
+        if add_reagent and pd.notna(reactant_2):
+            graph.add_edge(reactant_2, reaction_id)
+        if pd.notna(product_2):
+            graph.add_edge(reaction_id, product_2)
 
     graph.draw(OUT, prog="dot")
 
