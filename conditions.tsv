@@ -8,3 +8,4 @@ reaction	type	catalyst	catalyst name	chemist	chemist name	group	group name	refer
 10	inorganic catalysis	CHEBI:82289	Sb₂O₃					https://doi.org/10.1002/cssc.202100400
 10	inorganic catalysis		Sb(OAc)₃					https://doi.org/10.1002/cssc.202100400
 23	inorganic catalysis	CHEBI:62984	zinc acetate					https://doi.org/10.1002/cssc.202100400
+28	inorganic catalysis		Ru(triphos-xyl)methylallyl	0000-0001-5225-4393	Stefan Westhues	1	Klankenmeyer	https://doi.org/10.1126/sciadv.aat9669

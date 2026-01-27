@@ -12,10 +12,10 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 11	PET	CHEBI:231672	BHET			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://onlinelibrary.wiley.com/doi/10.1002/jobm.202000053
 12	PET	CHEBI:53259	PET			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://doi.org/10.1002/anie.202117528
 13	PET	CHEBI:156286	DMT	CHEBI:18276	H₂	CHEBI:747241	DMCD			MOP:0000589	hydrogenation		https://doi.org/10.1039/D4SU00658E
-14	PET	CHEBI:30742	ethylene glycol	CHEBI:747242	arylboronic acid	CHEBI:747243	arylboronic ester				boronic esterification		https://doi.org/10.1039/D4SU00658E
-15	PET	CHEBI:30742	ethylene glycol	CHEBI:36596	dimethyl carbonate	CHEBI:178725	ethylene carbonate				esterification		https://doi.org/10.1039/D4SU00658E
+14	ETG	CHEBI:30742	ethylene glycol	CHEBI:747242	arylboronic acid	CHEBI:747243	arylboronic ester				boronic esterification		https://doi.org/10.1039/D4SU00658E
+15	ETG	CHEBI:30742	ethylene glycol	CHEBI:36596	dimethyl carbonate	CHEBI:178725	ethylene carbonate				esterification		https://doi.org/10.1039/D4SU00658E
 16	PET	CHEBI:15702	TPA			CHEBI:30746	benzoic acid			MOP:0001713	decarboxylation		https://doi.org/10.1039/D4SU00658E
-17	PET	CHEBI:30742	ethylene glycol			CHEBI:15343	acetaldehyde			MOP:0000628	dehydration		https://doi.org/10.1039/D4SU00658E
+17	ETG	CHEBI:30742	ethylene glycol			CHEBI:15343	acetaldehyde			MOP:0000628	dehydration		https://doi.org/10.1039/D4SU00658E
 18	PET	CHEBI:747241	DMCD			CHEBI:747245	CHDM				hydrogenolysis		https://doi.org/10.1016/j.cej.2024.157249
 19	PET	CHEBI:156286	DMT			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://doi.org/10.1002/jctb.7035
 20	PET	CHEBI:15702	TPA	CHEBI:30742	ethylene glycol	CHEBI:53259	PET			MOP:0000644	polycondensation		https://doi.org/10.1039/D5SU00316D
@@ -26,3 +26,11 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 25	PET	CHEBI:747247	terephthalonitrile			CHEBI:747248	p-xylenediamine 			MOP:0000589	hydrogenation		https://doi.org/10.1002/cssc.202100400
 26	PET	CHEBI:747247	terephthalonitrile			CHEBI:747249	1,4-bis(aminomethyl)cyclohexane			MOP:0000589	hydrogenation
 27	PET	CHEBI:747250	diaminopropylterephthalamide	CHEBI:16008	salicylaldehyde	CHEBI:747251	HBAPTPA			RXNO:0000335	reductive amination		https://doi.org/10.1039/D4SU00658E, figure 15
+28	PET	CHEBI:53259	PET			CHEBI:747252	1,4-di(hydroxymethyl)benzene				hydrogenolysis		https://doi.org/10.1126/sciadv.aat9669
+29	PET	CHEBI:53259	PET			CHEBI:27417	p-xylene	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1039/D3GC03145D|https://doi.org/10.1021/acssuschemeng.3c08206|https://doi.org/10.1002/cssc.202402013
+30	PET	CHEBI:53259	PET			CHEBI:747245	CHDM	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
+31	PET	CHEBI:53259	PET			CHEBI:747253	alkyl 4-(hydroxymethyl)benzoates	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
+32	PET	CHEBI:53259	PET			CHEBI:747254	methyl 4-(hydroxymethyl)benzoates	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
+33	PET	CHEBI:53259	PET			CHEBI:747255	ethyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization	the paper has three great examples showing how this product is a precursor for three important pharma drug syntheses	https://doi.org/10.1002/anie.202408561
+34	PET	CHEBI:53259	PET			CHEBI:747256	isopropyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
+35	PET	CHEBI:53259	PET			CHEBI:747257	n-butyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561

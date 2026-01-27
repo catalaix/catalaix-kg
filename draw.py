@@ -37,8 +37,9 @@ HIGHLIGHT = {
 def main(
     *,
     add_reagent: bool = False,
+    add_output_2: bool = False,
     group_closed_loop: bool = True,
-    direction: Literal["LR", "TD"] = "TD",
+    direction: Literal["LR", "TD"] = "LR",
 ) -> None:
     reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
     reactions_df = reactions_df[reactions_df["kingdom"] == "PET"]
@@ -78,9 +79,11 @@ def main(
         if pd.notna(curie)
     }
 
-    keep = ["input", "output", "output 2"]
+    keep = ["input", "output"]
     if add_reagent:
         keep.append("reagent")
+    if add_output_2:
+        keep.append("output 2")
 
     add_node_for = {curie for curies in reactions_df[keep].values for curie in curies}
 
@@ -146,7 +149,7 @@ def main(
         graph.add_edge(reaction_id, product_1)
         if add_reagent and pd.notna(reactant_2):
             graph.add_edge(reactant_2, reaction_id)
-        if pd.notna(product_2):
+        if add_output_2 and pd.notna(product_2):
             graph.add_edge(reaction_id, product_2)
 
         if group_closed_loop and reactant_1 in HIGHLIGHT and product_1 in HIGHLIGHT:
