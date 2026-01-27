@@ -11,6 +11,7 @@
 """Create a diagram with the reaction network."""
 
 from collections import defaultdict
+from typing import Literal
 
 import pandas as pd
 from pathlib import Path
@@ -33,7 +34,12 @@ HIGHLIGHT = {
 }
 
 
-def main(add_reagent: bool = False, group_closed_loop: bool = False) -> None:
+def main(
+    *,
+    add_reagent: bool = False,
+    group_closed_loop: bool = True,
+    direction: Literal["LR", "TD"] = "TD",
+) -> None:
     reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
     reactions_df = reactions_df[reactions_df["kingdom"] == "PET"]
 
@@ -52,7 +58,7 @@ def main(add_reagent: bool = False, group_closed_loop: bool = False) -> None:
         )
 
     graph = pgv.AGraph(directed=True)
-    graph.graph_attr["rankdir"] = "LR"
+    graph.graph_attr["rankdir"] = direction
     graph.node_attr.update(
         {
             "fontsize": "16",
