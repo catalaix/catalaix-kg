@@ -1,11 +1,14 @@
-reaction	type	catalyst	catalyst name	chemist	chemist name	group	group name	references
-6	inorganic catalysis	CHEBI:747215	ZnCl₂(TMGeech)		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
-7	inorganic catalysis	CHEBI:747215	ZnCl₂(TMGeech)		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
-6	inorganic catalysis		Zn(DMEG2ch)2	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
-7	inorganic catalysis		Zn(DMEG2ch)2	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
-7	microbe		PETase					https://doi.org/10.1016/j.synbio.2025.07.013
-12	microbe		MHETase					https://doi.org/10.1016/j.synbio.2025.07.013
-10	inorganic catalysis	CHEBI:82289	Sb₂O₃					https://doi.org/10.1002/cssc.202100400
-10	inorganic catalysis		Sb(OAc)₃					https://doi.org/10.1002/cssc.202100400
-23	inorganic catalysis	CHEBI:62984	zinc acetate					https://doi.org/10.1002/cssc.202100400
-28	inorganic catalysis		Ru(triphos-xyl)methylallyl	0000-0001-5225-4393	Stefan Westhues	1	Klankenmeyer	https://doi.org/10.1126/sciadv.aat9669
+reaction	homogenous?	phase	type	solvent	temperature	time	catalyst	catalyst name	chemist	chemist name	group	group name	references
+6	yes	liquid	inorganic catalysis				CHEBI:747215	[ZnCl₂(TMGeech)]		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
+7	yes	liquid	inorganic catalysis				CHEBI:747215	[ZnCl₂(TMGeech)]		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
+6	yes	liquid	inorganic catalysis					[Zn(DMEG2ch)₂]	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
+7	yes	liquid	inorganic catalysis					[Zn(DMEG2ch)₂]	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
+7			microbe					PETase					https://doi.org/10.1016/j.synbio.2025.07.013
+12			microbe					MHETase					https://doi.org/10.1016/j.synbio.2025.07.013
+10			inorganic catalysis				CHEBI:82289	Sb₂O₃					https://doi.org/10.1002/cssc.202100400
+10			inorganic catalysis					Sb(OAc)₃					https://doi.org/10.1002/cssc.202100400
+23			inorganic catalysis				CHEBI:62984	zinc acetate					https://doi.org/10.1002/cssc.202100400
+28			inorganic catalysis					Ru(triphos-xyl)methylallyl	0000-0001-5225-4393	Stefan Westhues	1	Klankenmeyer	https://doi.org/10.1126/sciadv.aat9669
+7	yes	solid	mechanical	same as reagent	RT		N/A						https://pubs.rsc.org/en/content/articlehtml/2024/gc/d3gc03643j
+7	yes	solid	mechanical	same as reagent	RT		CaO	Calcium oxide					https://pubs.rsc.org/en/content/articlehtml/2024/gc/d3gc03643j
+7	yes	solid	mechanical	same as reagent	RT		K₂CO3	Potassium carbonate	0009-0003-9731-4347	Sebastian Schier	3	Pich	unpublished
