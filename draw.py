@@ -21,10 +21,12 @@ import cairosvg
 
 HERE = Path(__file__).parent.resolve()
 IMG = HERE.joinpath("img")
-OUT = HERE.joinpath("graph.png")
-REACTIONS_PATH = HERE.joinpath("reactions.tsv")
-CONDITIONS_PATH = HERE.joinpath("conditions.tsv")
-LABS_PATH = HERE.joinpath("labs.tsv")
+CURATION = HERE.joinpath("curation")
+OUT_PNG = HERE.joinpath("graph.png")
+OUT_SVG = HERE.joinpath("graph.svg")
+REACTIONS_PATH = CURATION.joinpath("reactions.tsv")
+CONDITIONS_PATH = CURATION.joinpath("conditions.tsv")
+LABS_PATH = CURATION.joinpath("labs.tsv")
 
 HIGHLIGHT = {
     "CHEBI:53259",  # PET
