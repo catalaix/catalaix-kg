@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Catalaix Knowledge Graph</h1>
+
+<h2>{{ name }}</h2>
+<p>
+    {% if image_url %}<img src="{{ image_url}}" align="right"/>{% endif %}
+    {{ description }}
+</p>
+
+<h2>Reactions as Input</h2>
+
+<img src="data:image/png;base64,{{ diagram }}" style="max-width: 1200px"/>
+
+{{ reactions.to_html(classes="table table-hover table-striped") | safe }}
+
+<h2>Conditions as Input</h2>
+{{ conditions.to_html(classes="table table-hover table-striped") | safe }}
+
+
+{% endblock %}

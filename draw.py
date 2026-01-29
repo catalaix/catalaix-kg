@@ -10,6 +10,7 @@
 
 """Create a diagram with the reaction network."""
 
+import textwrap
 from collections import defaultdict
 from typing import Literal
 
@@ -22,8 +23,7 @@ import cairosvg
 HERE = Path(__file__).parent.resolve()
 IMG = HERE.joinpath("img")
 CURATION = HERE.joinpath("curation")
-OUT_PNG = HERE.joinpath("graph.png")
-OUT_SVG = HERE.joinpath("graph.svg")
+OUT = HERE.joinpath("graph.png")
 REACTIONS_PATH = CURATION.joinpath("reactions.tsv")
 CONDITIONS_PATH = CURATION.joinpath("conditions.tsv")
 LABS_PATH = CURATION.joinpath("labs.tsv")
@@ -45,9 +45,31 @@ def main(
 ) -> None:
     reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
     reactions_df = reactions_df[reactions_df["kingdom"] == "PET"]
-
     conditions_df = pd.read_csv(CONDITIONS_PATH, sep="\t")
     labs_df = pd.read_csv(LABS_PATH, sep="\t")
+    return draw(
+        labs_df=labs_df,
+        reactions_df=reactions_df,
+        conditions_df=conditions_df,
+        add_reagent=add_reagent,
+        add_output_2=add_output_2,
+        group_closed_loop=group_closed_loop,
+        direction=direction,
+        output=OUT,
+    )
+
+
+def draw(
+    labs_df: pd.DataFrame,
+    reactions_df: pd.DataFrame,
+    conditions_df: pd.DataFrame,
+    *,
+    add_reagent: bool = False,
+    add_output_2: bool = False,
+    group_closed_loop: bool = True,
+    direction: Literal["LR", "TD"] = "LR",
+    output: Path | None = None,
+) -> None | str:
     lab_id_to_name = {
         group_id: professor.split(" ", maxsplit=1)[1]
         for group_id, professor in labs_df[["group", "Professor"]].values
@@ -114,7 +136,7 @@ def main(
                 )
         if curie in add_node_for:
             node_attrs = dict(
-                label=name if pd.notna(name) else "???",
+                label=textwrap.fill(name, 30) if pd.notna(name) else "???",
                 labelloc="b",
                 shape="box",
             )
@@ -157,7 +179,7 @@ def main(
         if group_closed_loop and reactant_1 in HIGHLIGHT and product_1 in HIGHLIGHT:
             sub.add_node(reaction_id)
 
-    graph.draw(OUT, prog="dot")
+    return graph.draw(output, format="png", prog="dot")
 
 
 if __name__ == "__main__":
