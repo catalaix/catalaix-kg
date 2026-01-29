@@ -6,17 +6,16 @@
 """
 
 from collections import defaultdict
-
-import pubmed_downloader
-import pandas as pd
 from pathlib import Path
-from tqdm import tqdm
-import pystow
-import click
 
+import click
+import pandas as pd
+import pubmed_downloader
+import pystow
 from curies import Reference
 from opencitations_client import get_incoming_citations, get_outgoing_citations
 from pystow.utils import safe_open_writer, write_pydantic_jsonl
+from tqdm import tqdm
 
 HERE = Path(__file__).parent.resolve()
 PAPERS_TSV_PATH = HERE.joinpath("literature.tsv")
@@ -28,7 +27,7 @@ OUTGOING_MOD = OPENCITATIONS_MOD.module("outgoing")
 
 
 def main(use_pubmed: bool = True, minimum_year: int = 2015) -> None:
-    labs_df = pd.read_csv(HERE.joinpath("labs.tsv"), sep="\t")
+    labs_df = pd.read_csv(HERE.joinpath("curation", "labs.tsv"), sep="\t")
 
     pubmed_ids: defaultdict[str, set[str]] = defaultdict(set)
 
