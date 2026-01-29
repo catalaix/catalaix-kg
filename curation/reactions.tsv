@@ -30,7 +30,7 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 29	PET	CHEBI:53259	PET			CHEBI:27417	p-xylene	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1039/D3GC03145D|https://doi.org/10.1021/acssuschemeng.3c08206|https://doi.org/10.1002/cssc.202402013
 30	PET	CHEBI:53259	PET			CHEBI:747245	CHDM	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
 31	PET	CHEBI:53259	PET			CHEBI:747253	alkyl 4-(hydroxymethyl)benzoates	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
-32	PET	CHEBI:53259	PET			CHEBI:747254	methyl 4-(hydroxymethyl)benzoates	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
+32	PET	CHEBI:53259	PET			CHEBI:747254	methyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
 33	PET	CHEBI:53259	PET			CHEBI:747255	ethyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization	the paper has three great examples showing how this product is a precursor for three important pharma drug syntheses	https://doi.org/10.1002/anie.202408561
 34	PET	CHEBI:53259	PET			CHEBI:747256	isopropyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
 35	PET	CHEBI:53259	PET			CHEBI:747257	n-butyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
