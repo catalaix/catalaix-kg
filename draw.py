@@ -10,9 +10,10 @@
 
 """Create a diagram with the reaction network."""
 
+import base64
 import textwrap
 from collections import defaultdict
-from typing import Literal
+from typing import Literal, Any
 
 import pandas as pd
 from pathlib import Path
@@ -61,6 +62,13 @@ def main(
             direction=direction,
             output=OUTPUT.joinpath(f"{kingdom}.png"),
         )
+
+
+def draw_bytes(*args: Any, **kwargs: Any) -> str:
+    diagram_bytes = draw(*args, **kwargs)
+    b64_bytes = base64.b64encode(diagram_bytes)
+    b64_str = b64_bytes.decode("ascii")
+    return b64_str
 
 
 def draw(

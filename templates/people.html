@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>People</h2>
+
+<ul>
+    {% for orcid, name in people.items() %}
+    <li>
+        <a href="{{ url_for(".get_person", orcid=orcid) }}">{{ name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

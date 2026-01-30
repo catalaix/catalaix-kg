@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ name }}</h2>
+
+{{ groups.to_html(classes="table table-hover table-striped") | safe }}
+
+{% endblock %}
