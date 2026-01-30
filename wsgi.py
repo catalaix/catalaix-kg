@@ -6,38 +6,50 @@
 #     "pandas>=3.0.0",
 # ]
 # ///
+
 from collections import defaultdict
 
 import flask
-from pathlib import Path
 import pandas as pd
 from flask_bootstrap import Bootstrap5
 import pyobo
 
+from constants import (
+    LABS_PATH,
+    REACTIONS_PATH,
+    REACTION_HIERARCHY_PATH,
+    CONDITIONS_PATH,
+    MEMBERSHIPS_PATH,
+    CLOSED_LOOPS_PATH,
+)
 from draw import draw_bytes
-
-HERE = Path(__file__).parent.resolve()
-CURATION_DIR = HERE.joinpath("curation")
-LABS_PATH = CURATION_DIR.joinpath("labs.tsv")
-REACTIONS_PATH = CURATION_DIR.joinpath("reactions.tsv")
-REACTION_HIERARCHY_PATH = CURATION_DIR.joinpath("reaction_hierarchy.tsv")
-CONDITIONS_PATH = CURATION_DIR.joinpath("conditions.tsv")
-MEMBERSHIPS_PATH = CURATION_DIR.joinpath("memberships.tsv")
 
 app = flask.Flask(__name__)
 Bootstrap5(app)
 
+
+def _get_catalysts_df(conditions: pd.DataFrame) -> pd.DataFrame:
+    return conditions[conditions["catalyst"].notna()][
+        ["catalyst", "catalyst name"]
+    ].drop_duplicates()
+
+
+CLOSED_LOOPS_DF = pd.read_csv(CLOSED_LOOPS_PATH, sep="\t")
 LABS_DF = pd.read_csv(LABS_PATH, sep="\t")
 REACTIONS_DF = pd.read_csv(REACTIONS_PATH, sep="\t")
 del REACTIONS_DF["desc."]
 REACTION_HIERARCHY_DF = pd.read_csv(REACTION_HIERARCHY_PATH, sep="\t")
-CONDITIONS_DF = pd.read_csv(CONDITIONS_PATH, sep="\t")
+CONDITIONS_DF = pd.read_csv(CONDITIONS_PATH, sep="\t").join(
+    REACTIONS_DF, on="reaction", how="left", rsuffix="_reaction", lsuffix="_condition"
+)
 
 MEMBERSHIPS_DF = pd.read_csv(MEMBERSHIPS_PATH, sep="\t")
-MEMBERSHIPS: defaultdict[str, set[int]] = defaultdict(set)
+ORCID_TO_GROUPS: defaultdict[str, set[int]] = defaultdict(set)
+GROUP_TO_ORCIDS: defaultdict[int, set[str]] = defaultdict(set)
 for orcid, _name, lab_id, _lab_name in MEMBERSHIPS_DF.values:
     if pd.notna(orcid):
-        MEMBERSHIPS[orcid].add(lab_id)
+        ORCID_TO_GROUPS[orcid].add(lab_id)
+        GROUP_TO_ORCIDS[lab_id].add(orcid)
 
 PEOPLE_DF = CONDITIONS_DF[
     CONDITIONS_DF["chemist"].notna() & CONDITIONS_DF["chemist name"].notna()
@@ -53,7 +65,9 @@ for orcid, name in (
     PEOPLE[orcid] = name
 
 CATALYST_GROUPING = CONDITIONS_DF[
-    CONDITIONS_DF["catalyst"].notna() & CONDITIONS_DF["catalyst name"].notna()
+    CONDITIONS_DF["catalyst"].notna()
+    & (CONDITIONS_DF["catalyst"].notna() != "no catalyst")
+    & CONDITIONS_DF["catalyst name"].notna()
 ].groupby(["catalyst", "catalyst name"])
 
 SUBSTRATE_GROUPING = REACTIONS_DF.groupby(["input", "input name"])
@@ -71,6 +85,7 @@ def get_home() -> str:
         catalysts=CATALYST_GROUPING,
         substrates=SUBSTRATE_GROUPING,
         products=PRODUCT_GROUPING,
+        closed_loops=CLOSED_LOOPS_DF,
     )
 
 
@@ -81,10 +96,15 @@ def get_people() -> str:
 
 @app.route("/person/<orcid>")
 def get_person(orcid: str) -> str:
+    conditions = CONDITIONS_DF[CONDITIONS_DF["chemist"] == orcid]
+    catalysts = _get_catalysts_df(conditions)
     return flask.render_template(
         "person.html",
+        orcid=orcid,
         name=PEOPLE[orcid],
-        groups=LABS_DF[LABS_DF["group"].isin(MEMBERSHIPS[orcid])],
+        groups=LABS_DF[LABS_DF["group"].isin(ORCID_TO_GROUPS[orcid])],
+        conditions=conditions,
+        catalysts=catalysts,
     )
 
 
@@ -92,10 +112,14 @@ def get_person(orcid: str) -> str:
 def get_group(group: int) -> str:
     data = LABS_DF.loc[LABS_DF["group"] == group].iloc[0].to_dict()
     members = MEMBERSHIPS_DF[MEMBERSHIPS_DF["lab"] == group]
+    conditions = CONDITIONS_DF[CONDITIONS_DF["chemist"].isin(GROUP_TO_ORCIDS[group])]
+    catalysts = _get_catalysts_df(conditions)
     return flask.render_template(
         "group.html",
         data=data,
         members=members,
+        conditions=conditions,
+        catalysts=catalysts,
     )
 
 
@@ -149,10 +173,10 @@ def get_entity(curie: str) -> str:
         name=name,
         description=description,
         image_url=image_url,
-        reactions=substrate_reactions_df,
-        conditions=substrate_conditions_df,
+        substrate_conditions=substrate_conditions_df,
         input_diagram=substrate_diagram,
         product_diagram=product_diagram,
+        product_conditions=product_conditions_df,
     )
 
 

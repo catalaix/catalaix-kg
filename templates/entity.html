@@ -11,15 +11,12 @@
 
 <img src="data:image/png;base64,{{ input_diagram }}" style="max-width: 1200px"/>
 
-{{ reactions.head().to_html(classes="table table-hover table-striped table-responsive") | safe }}
-
-<h2>Conditions as Substrate</h2>
-
-{{ conditions.head().to_html(classes="table table-hover table-striped table-responsive") | safe }}
-
+{{ experiments_table(substrate_conditions, show_chemist=True, show_group=True) }}
 
 <h2>Reactions as Product</h2>
 
 <img src="data:image/png;base64,{{ product_diagram }}" style="max-width: 1200px"/>
+
+{{ experiments_table(product_conditions, show_chemist=True, show_group=True) }}
 
 {% endblock %}

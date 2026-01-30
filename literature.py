@@ -6,7 +6,6 @@
 """
 
 from collections import defaultdict
-from pathlib import Path
 
 import click
 import pandas as pd
@@ -16,8 +15,8 @@ from curies import Reference
 from opencitations_client import get_incoming_citations, get_outgoing_citations
 from pystow.utils import safe_open_writer, write_pydantic_jsonl
 from tqdm import tqdm
+from constants import HERE
 
-HERE = Path(__file__).parent.resolve()
 PAPERS_TSV_PATH = HERE.joinpath("literature.tsv")
 PAPERS_JSONL_PATH = HERE.joinpath("literature.jsonl")
 

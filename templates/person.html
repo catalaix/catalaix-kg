@@ -3,6 +3,30 @@
 {% block content %}
 <h2>{{ name }}</h2>
 
-{{ groups.to_html(classes="table table-hover table-striped") | safe }}
+<dl>
+    <dt>ORCiD</dt>
+    <dd><a href="https://orcid.org/{{ orcid }}">{{ orcid }}</a></dd>
+    <dt>Group</dt>
+    {% for i, row in groups.iterrows() %}
+    <dd><a href="{{ url_for('get_group', group=row['group']) }}">{{ row['Professor'] }}</a></dd>
+    {% endfor %}
+</dl>
+
+
+<h3>Catalysts</h3>
+<div class="row g-3 p-2">
+    {% for catalyst_curie, catalyst_name in catalysts.values %}
+    {% if catalyst_curie.startswith("CHEBI:") %}
+    {{ molecule_card('get_catalyst', catalyst_curie, catalyst_name) }}
+    {% endif %}
+    {% endfor %}
+</div>
+
+<h3>Experiments</h3>
+{{ experiments_table(conditions, show_chemist=False) }}
+
+<h3>Extras</h3>
+
+{{ conditions.to_html(classes="table table-hover table-striped") | safe }}
 
 {% endblock %}

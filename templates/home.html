@@ -1,44 +1,74 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Groups</h2>
-<ol>
-    {% for i, row in labs.iterrows() %}
-    <li>
-        <a href="{{ url_for('.get_group', group=row['group']) }}">{{ row['Professor'] }}</a> ({{ row['Topic'] }})
-    </li>
-    {% endfor %}
-</ol>
-<p>See also <a href="https://catalaix.com/en/team/">the official team page.</a></p>
 
-<h2>People</h2>
-<ul>
-    {% for orcid, name in people.items() %}
-    <li>
-        <a href="{{ url_for(".get_person", orcid=orcid) }}">{{ name }}</a>
-    </li>
-    {% endfor %}
-</ul>
+<div class="card" style="margin-top: 2em;">
+    <div class="card-header">Groups</div>
+    <ul class="list-group list-group-flush">
+        {% for i, row in labs.iterrows() %}
+        <li class="list-group-item">
+            <a href="{{ url_for('.get_group', group=row['group']) }}">{{ row['Professor'] }}</a>
+            ({{ row['Topic'] }})
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="card-footer">
+        See also <a href="https://catalaix.com/en/team/">the official team page.</a>
+    </div>
+</div>
 
-<h2>Catalysts</h2>
-<ul>
-{% for (catalyst_curie, catalyst), catalyst_df in catalysts %}
-<li><a href="{{ url_for(".get_catalyst", curie=catalyst_curie) }}">{{ catalyst }}</a></li>
-{% endfor %}
-</ul>
+<div class="card" style="margin-top: 2em;">
+    <div class="card-header">People</div>
+    <ul class="list-group list-group-flush">
+        {% for orcid, name in people.items() %}
+        <li class="list-group-item">
+            <a href="{{ url_for('.get_person', orcid=orcid) }}">{{ name }}</a> (orcid:{{ orcid }})
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
-<h2>Substrates</h2>
-<ul>
-{% for (substrate_curie, substrate), substrate_df in substrates %}
-<li><a href="{{ url_for("get_entity", curie=substrate_curie) }}">{{ substrate }}</a></li>
-{% endfor %}
-</ul>
+<div class="card" style="margin-top: 2em;">
+    <div class="card-header">Closed Loops</div>
+    <div class="row g-3 p-2">
+        {% for name, curie, desc in closed_loops.values %}
+        {{ molecule_card('get_entity', curie, name) }}
+        {% endfor %}
+    </div>
+</div>
 
-<h2>Products</h2>
-<ul>
-{% for (product_curie, product), product_df in products %}
-<li><a href="{{ url_for("get_entity", curie=product_curie) }}">{{ product }}</a></li>
-{% endfor %}
-</ul>
+<div class="card" style="margin-top: 2em;">
+    <div class="card-header">Catalysts</div>
+    <div class="row g-3 p-2">
+        {% for (catalyst_curie, catalyst_name), catalyst_df in catalysts %}
+        {% if catalyst_curie.startswith("CHEBI:") %}
+        {{ molecule_card('get_catalyst', catalyst_curie, catalyst_name) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card" style="margin-top: 2em;">
+    <div class="card-header">Substrates</div>
+    <div class="row g-3 p-2">
+        {% for (substrate_curie, substrate_name), substrate_df in substrates %}
+        {% if substrate_curie.startswith("CHEBI:") %}
+        {{ molecule_card('get_entity', substrate_curie, substrate_name) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+<div class="card" style="margin-top: 2em;">
+    <div class="card-header">Products</div>
+    <div class="row g-3 p-2">
+        {% for (product_curie, product_name), product_df in products %}
+        {% if product_curie.startswith("CHEBI:") %}
+        {{ molecule_card('get_entity', product_curie, product_name) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}

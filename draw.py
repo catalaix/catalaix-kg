@@ -20,15 +20,16 @@ from pathlib import Path
 from pystow.utils import download
 import pygraphviz as pgv
 import cairosvg
+from constants import (
+    HERE,
+    REACTIONS_PATH,
+    REACTION_HIERARCHY_PATH,
+    CONDITIONS_PATH,
+    LABS_PATH,
+)
 
-HERE = Path(__file__).parent.resolve()
 IMG = HERE.joinpath("img")
-CURATION = HERE.joinpath("curation")
 OUTPUT = HERE.joinpath("output")
-REACTIONS_PATH = CURATION.joinpath("reactions.tsv")
-REACTION_HIERARCHY_PATH = CURATION.joinpath("reaction_hierarchy.tsv")
-CONDITIONS_PATH = CURATION.joinpath("conditions.tsv")
-LABS_PATH = CURATION.joinpath("labs.tsv")
 
 HIGHLIGHT = {
     "CHEBI:53259",  # PET
@@ -89,10 +90,10 @@ def draw(
         for group_id, professor in labs_df[["group", "Professor"]].values
     }
     reaction_to_group_names = defaultdict(lambda: defaultdict(set))
-    for reaction, reaction_type, group in conditions_df[
-        ["reaction", "type", "group"]
+    for reaction, reaction_method, group in conditions_df[
+        ["reaction", "method", "group"]
     ].values:
-        reaction_to_group_names[reaction][reaction_type].add(
+        reaction_to_group_names[reaction][reaction_method].add(
             lab_id_to_name[group] if pd.notna(group) and group else "External"
         )
 
@@ -169,13 +170,13 @@ def draw(
         reactant_2,
         product_1,
         product_2,
-        reaction_type,
+        reaction_method,
     ) in reactions_df[
         ["reaction", "input", "reagent", "output", "output 2", "type name"]
     ].values:
         label_parts = []
-        if pd.notna(reaction_type):
-            label_parts.append(reaction_type)
+        if pd.notna(reaction_method):
+            label_parts.append(reaction_method)
         if type_to_groups := reaction_to_group_names.get(reaction_id):
             for rtype, groups in type_to_groups.items():
                 groups_text = ", ".join(sorted(groups))

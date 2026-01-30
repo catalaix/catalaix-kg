@@ -3,15 +3,37 @@
 {% block content %}
 <h2>{{ data['Professor'] }} Group</h2>
 
-{{ data }}
+<img src="{{data['Lab Logo'] }}" align="right"/>
 
-<h3>Members</h3>
+<dl>
+    <dt>Topic</dt>
+    <dd>{{ data['Topic'] }}</dd>
+    <dt>Principal Investigator</dt>
+    <dd>{{ data['Professor'] }} <a href="{{ data['ORCID'] }}">orcid:{{ data['ORCID'] }}</a></dd>
+    <dt>Website</dt>
+    <dd><a href="{{ data['Lab Website']}}">{{ data['Lab Website']}}</a></dd>
+</dl>
+
+<h3>Team</h3>
+<p>The following team members have data in the Catalaix KG:</p>
 <ul>
     {% for i, row in members.iterrows() %}
     <li>
-        <a href="{{ url_for("get_person", orcid=row['orcid']) }}">{{ row['name'] }}</a>
+        <a href="{{ url_for('get_person', orcid=row['orcid']) }}">{{ row['name'] }}</a>
     </li>
     {% endfor %}
 </ul>
+
+<h3>Catalysts</h3>
+<div class="row g-3 p-2">
+    {% for catalyst_curie, catalyst_name in catalysts.values %}
+    {% if catalyst_curie.startswith("CHEBI:") %}
+    {{ molecule_card('get_catalyst', catalyst_curie, catalyst_name) }}
+    {% endif %}
+    {% endfor %}
+</div>
+
+<h3>Experiments</h3>
+{{ experiments_table(conditions, show_chemist=True) }}
 
 {% endblock %}
