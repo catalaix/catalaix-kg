@@ -2,13 +2,17 @@
 
 This repository contains the demo for the Catalaix knowledge graph (KG).
 
-1. the [reactions](reactions.tsv) including the substrates, products, and
+It contains the following manually curated artifacts:
+
+1. the [reactions](curation/reactions.tsv) including the substrates, products, and
    literature references describing the reactions
-2. the [conditions](conditions.tsv) including experimental information like the
+2. the [reactions hierarchy](curation/reaction_hierarchy.tsv) which connects reactions
+   with different levels of abstraction
+3. the [conditions](curation/conditions.tsv) including experimental information like the
    catalyst/microbe, byproducts, conditions and provenance information like the
    group that ran the reactions and literature references where the conditions
    were used
-3. the [labs](labs.tsv) within the consortium
+4. the [labs](curation/labs.tsv) within the consortium
 
 ![](graph.png)
 
