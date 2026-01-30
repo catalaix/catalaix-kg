@@ -1,0 +1,11 @@
+child	child name	parent	parent name
+CHEBI:83221	methyl lactate	CHEBI:83219	lactate ester
+CHEBI:78321	ethyl lactate	CHEBI:83219	lactate ester
+CHEBI:169137	n-butyl lactate	CHEBI:83219	lactate ester
+CHEBI:747274	isobutyl lactate	CHEBI:83219	lactate ester
+CHEBI:747275	benyzl lactate	CHEBI:83219	lactate ester
+CHEBI:747276	allyl lactate	CHEBI:83219	lactate ester
+CHEBI:747254	methyl 4-(hydroxymethyl)benzoate	CHEBI:747253	alkyl 4-(hydroxymethyl)benzoates
+CHEBI:747255	ethyl 4-(hydroxymethyl)benzoate	CHEBI:747253	alkyl 4-(hydroxymethyl)benzoates
+CHEBI:747256	isopropyl 4-(hydroxymethyl)benzoate	CHEBI:747253	alkyl 4-(hydroxymethyl)benzoates
+CHEBI:747257	n-butyl 4-(hydroxymethyl)benzoate	CHEBI:747253	alkyl 4-(hydroxymethyl)benzoates

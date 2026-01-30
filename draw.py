@@ -26,6 +26,7 @@ from constants import (
     REACTION_HIERARCHY_PATH,
     CONDITIONS_PATH,
     LABS_PATH,
+    CHEMICAL_HIERARCHY_PATH,
 )
 
 IMG = HERE.joinpath("img")
@@ -50,6 +51,7 @@ def main(
     labs_df = pd.read_csv(LABS_PATH, sep="\t")
     reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
     reaction_hierarchy_df = pd.read_csv(REACTION_HIERARCHY_PATH, sep="\t")
+    chemical_hierarchy_df = pd.read_csv(CHEMICAL_HIERARCHY_PATH, sep="\t")
 
     for kingdom, kingdom_df in reactions_df.groupby("kingdom"):
         draw(
@@ -57,6 +59,7 @@ def main(
             reactions_df=kingdom_df,
             conditions_df=conditions_df,
             reaction_hierarchy_df=reaction_hierarchy_df,
+            chemical_hierarchy_df=chemical_hierarchy_df,
             add_reagent=add_reagent,
             add_output_2=add_output_2,
             group_closed_loop=group_closed_loop,
@@ -77,11 +80,13 @@ def draw(
     reactions_df: pd.DataFrame,
     conditions_df: pd.DataFrame,
     reaction_hierarchy_df: pd.DataFrame,
+    chemical_hierarchy_df: pd.DataFrame,
     *,
     add_reagent: bool = False,
     add_output_2: bool = False,
     group_closed_loop: bool = True,
     draw_reaction_hierarchy: bool = True,
+    draw_chemical_hierarchy: bool = True,
     direction: Literal["LR", "TD"] = "LR",
     output: Path | None = None,
 ) -> None | str:
@@ -197,6 +202,11 @@ def draw(
 
     if draw_reaction_hierarchy:
         for child, parent in reaction_hierarchy_df.values:
+            if child in graph and parent in graph:
+                graph.add_edge(child, parent, label="is a")
+
+    if draw_chemical_hierarchy:
+        for child, parent in chemical_hierarchy_df[["child", "parent"]].values:
             if child in graph and parent in graph:
                 graph.add_edge(child, parent, label="is a")
 

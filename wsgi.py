@@ -21,6 +21,7 @@ from constants import (
     CONDITIONS_PATH,
     MEMBERSHIPS_PATH,
     CLOSED_LOOPS_PATH,
+    CHEMICAL_HIERARCHY_PATH,
 )
 from draw import draw_bytes
 
@@ -34,6 +35,7 @@ def _get_catalysts_df(conditions: pd.DataFrame) -> pd.DataFrame:
     ].drop_duplicates()
 
 
+CHEMICAL_HIERARCHY_DF = pd.read_csv(CHEMICAL_HIERARCHY_PATH, sep="\t")
 CLOSED_LOOPS_DF = pd.read_csv(CLOSED_LOOPS_PATH, sep="\t")
 LABS_DF = pd.read_csv(LABS_PATH, sep="\t")
 REACTIONS_DF = pd.read_csv(REACTIONS_PATH, sep="\t")
@@ -150,6 +152,7 @@ def get_entity(curie: str) -> str:
         reactions_df=substrate_reactions_df,
         conditions_df=substrate_conditions_df,
         reaction_hierarchy_df=REACTION_HIERARCHY_DF,
+        chemical_hierarchy_df=CHEMICAL_HIERARCHY_DF,
         direction="TD",
         group_closed_loop=False,
     )
@@ -164,6 +167,7 @@ def get_entity(curie: str) -> str:
         reactions_df=product_reactions_df,
         conditions_df=product_conditions_df,
         reaction_hierarchy_df=REACTION_HIERARCHY_DF,
+        chemical_hierarchy_df=CHEMICAL_HIERARCHY_DF,
         direction="TD",
         group_closed_loop=False,
     )
