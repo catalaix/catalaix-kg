@@ -3,8 +3,8 @@ reaction	homogenous?	phase	method	solvent	temperature	time	yield (%)	k [min^-1]	
 7	yes	liquid	inorganic catalysis						CHEBI:747215	[ZnCl₂(TMGeech)]	0009-0005-3470-2005	Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
 6	yes	liquid	inorganic catalysis							[Zn(DMEG2ch)₂]	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
 7	yes	liquid	inorganic catalysis							[Zn(DMEG2ch)₂]	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
-7			microbe							PETase			0	External	https://doi.org/10.1016/j.synbio.2025.07.013
-12			microbe							MHETase			0	External	https://doi.org/10.1016/j.synbio.2025.07.013
+7			microbe						EC:3.1.1.101	PETase			0	External	https://doi.org/10.1016/j.synbio.2025.07.013
+12			microbe						EC:3.1.1.102	MHETase			0	External	https://doi.org/10.1016/j.synbio.2025.07.013
 10			inorganic catalysis						CHEBI:82289	Sb₂O₃			0	External	https://doi.org/10.1002/cssc.202100400
 10			inorganic catalysis							Sb(OAc)₃			0	External	https://doi.org/10.1002/cssc.202100400
 23			inorganic catalysis						CHEBI:62984	zinc acetate			0	External	https://doi.org/10.1002/cssc.202100400
