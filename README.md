@@ -1,8 +1,6 @@
 # Catalaix Knowledge Graph
 
-This repository contains the demo for the Catalaix knowledge graph (KG).
-
-It contains the following manually curated artifacts:
+This repository contains the demo for the Catalaix knowledge graph (KG):
 
 1. the [reactions](curation/reactions.tsv) including the substrates, products,
    and literature references describing the reactions
@@ -16,10 +14,7 @@ It contains the following manually curated artifacts:
    conditions were used
 5. the [labs](curation/labs.tsv) within the consortium and their
    [members](curation/memberships.tsv)
+6. literature published by labs in the consortium and important to members of
+   the consortium, and an induced citation network
 
 ![](output/PET.png)
-
-Later:
-
-1. link labs to the papers they've published, what they like to read, who they
-   cite, and who cites them
