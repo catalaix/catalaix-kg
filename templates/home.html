@@ -1,16 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Catalaix Knowledge Graph</h1>
-
 <h2>Groups</h2>
-<p>See <a href="https://catalaix.com/en/team/">the official team page.</a></p>
-{{ labs.to_html(classes="table table-hover table-striped") | safe }}
+<ol>
+    {% for i, row in labs.iterrows() %}
+    <li>
+        <a href="{{ url_for('.get_group', group=row['group']) }}">{{ row['Professor'] }}</a> ({{ row['Topic'] }})
+    </li>
+    {% endfor %}
+</ol>
+<p>See also <a href="https://catalaix.com/en/team/">the official team page.</a></p>
 
-<h2>Reactions</h2>
-{{ reactions.to_html(classes="table table-hover table-striped") | safe }}
+<h2>People</h2>
+<ul>
+    {% for orcid, name in people.items() %}
+    <li>
+        <a href="{{ url_for(".get_person", orcid=orcid) }}">{{ name }}</a>
+    </li>
+    {% endfor %}
+</ul>
 
-<h2>Conditions</h2>
-{{ conditions.to_html(classes="table table-hover table-striped") | safe }}
+<h2>Catalysts</h2>
+<ul>
+{% for (catalyst_curie, catalyst), catalyst_df in catalysts %}
+<li><a href="{{ url_for(".get_catalyst", curie=catalyst_curie) }}">{{ catalyst }}</a></li>
+{% endfor %}
+</ul>
+
+<h2>Substrates</h2>
+<ul>
+{% for (substrate_curie, substrate), substrate_df in substrates %}
+<li><a href="{{ url_for("get_entity", curie=substrate_curie) }}">{{ substrate }}</a></li>
+{% endfor %}
+</ul>
+
+<h2>Products</h2>
+<ul>
+{% for (product_curie, product), product_df in products %}
+<li><a href="{{ url_for("get_entity", curie=product_curie) }}">{{ product }}</a></li>
+{% endfor %}
+</ul>
 
 {% endblock %}

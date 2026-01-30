@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ data['Professor'] }} Group</h2>
+
+{{ data }}
+
+<h3>Members</h3>
+<ul>
+    {% for i, row in members.iterrows() %}
+    <li>
+        <a href="{{ url_for("get_person", orcid=row['orcid']) }}">{{ row['name'] }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

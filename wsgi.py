@@ -6,6 +6,7 @@
 #     "pandas>=3.0.0",
 # ]
 # ///
+from collections import defaultdict
 
 import flask
 from pathlib import Path
@@ -13,27 +14,96 @@ import pandas as pd
 from flask_bootstrap import Bootstrap5
 import pyobo
 
-from draw import draw
-import base64
-
+from draw import draw_bytes
 
 HERE = Path(__file__).parent.resolve()
 CURATION_DIR = HERE.joinpath("curation")
 LABS_PATH = CURATION_DIR.joinpath("labs.tsv")
 REACTIONS_PATH = CURATION_DIR.joinpath("reactions.tsv")
+REACTION_HIERARCHY_PATH = CURATION_DIR.joinpath("reaction_hierarchy.tsv")
 CONDITIONS_PATH = CURATION_DIR.joinpath("conditions.tsv")
+MEMBERSHIPS_PATH = CURATION_DIR.joinpath("memberships.tsv")
 
 app = flask.Flask(__name__)
 Bootstrap5(app)
 
+LABS_DF = pd.read_csv(LABS_PATH, sep="\t")
+REACTIONS_DF = pd.read_csv(REACTIONS_PATH, sep="\t")
+del REACTIONS_DF["desc."]
+REACTION_HIERARCHY_DF = pd.read_csv(REACTION_HIERARCHY_PATH, sep="\t")
+CONDITIONS_DF = pd.read_csv(CONDITIONS_PATH, sep="\t")
+
+MEMBERSHIPS_DF = pd.read_csv(MEMBERSHIPS_PATH, sep="\t")
+MEMBERSHIPS: defaultdict[str, set[int]] = defaultdict(set)
+for orcid, _name, lab_id, _lab_name in MEMBERSHIPS_DF.values:
+    if pd.notna(orcid):
+        MEMBERSHIPS[orcid].add(lab_id)
+
+PEOPLE_DF = CONDITIONS_DF[
+    CONDITIONS_DF["chemist"].notna() & CONDITIONS_DF["chemist name"].notna()
+][["chemist", "chemist name"]].drop_duplicates()
+PEOPLE: dict[str, str] = {}
+for orcid, name in (
+    CONDITIONS_DF[
+        CONDITIONS_DF["chemist"].notna() & CONDITIONS_DF["chemist name"].notna()
+    ][["chemist", "chemist name"]]
+    .drop_duplicates()
+    .values
+):
+    PEOPLE[orcid] = name
+
+CATALYST_GROUPING = CONDITIONS_DF[
+    CONDITIONS_DF["catalyst"].notna() & CONDITIONS_DF["catalyst name"].notna()
+].groupby(["catalyst", "catalyst name"])
+
+SUBSTRATE_GROUPING = REACTIONS_DF.groupby(["input", "input name"])
+PRODUCT_GROUPING = REACTIONS_DF.groupby(["output", "output name"])
+
 
 @app.route("/")
 def get_home() -> str:
-    labs_df = pd.read_csv(LABS_PATH, sep="\t")
-    reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
-    conditions_df = pd.read_csv(CONDITIONS_PATH, sep="\t")
     return flask.render_template(
-        "home.html", labs=labs_df, reactions=reactions_df, conditions=conditions_df
+        "home.html",
+        people=PEOPLE,
+        labs=LABS_DF,
+        reactions=REACTIONS_DF,
+        conditions=CONDITIONS_DF,
+        catalysts=CATALYST_GROUPING,
+        substrates=SUBSTRATE_GROUPING,
+        products=PRODUCT_GROUPING,
+    )
+
+
+@app.route("/person/")
+def get_people() -> str:
+    return flask.render_template("people.html", people=PEOPLE)
+
+
+@app.route("/person/<orcid>")
+def get_person(orcid: str) -> str:
+    return flask.render_template(
+        "person.html",
+        name=PEOPLE[orcid],
+        groups=LABS_DF[LABS_DF["group"].isin(MEMBERSHIPS[orcid])],
+    )
+
+
+@app.route("/group/<int:group>")
+def get_group(group: int) -> str:
+    data = LABS_DF.loc[LABS_DF["group"] == group].iloc[0].to_dict()
+    members = MEMBERSHIPS_DF[MEMBERSHIPS_DF["lab"] == group]
+    return flask.render_template(
+        "group.html",
+        data=data,
+        members=members,
+    )
+
+
+@app.route("/catalyst/<curie>")
+def get_catalyst(curie: str) -> str:
+    return flask.render_template(
+        "catalyst.html",
+        conditions=CONDITIONS_DF[CONDITIONS_DF["catalyst"] == curie],
     )
 
 
@@ -45,32 +115,44 @@ def get_entity(curie: str) -> str:
         image_url = f"https://bioregistry.io/{curie}?provider=chebi-img"
     else:
         image_url = None
-    labs_df = pd.read_csv(LABS_PATH, sep="\t")
-    reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
-    conditions_df = pd.read_csv(CONDITIONS_PATH, sep="\t")
 
-    reactions_df = reactions_df[reactions_df["input"] == curie]
-    reaction_ids = reactions_df["reaction"]
-    conditions_df = conditions_df[conditions_df["reaction"].isin(reaction_ids)]
-
-    diagram_bytes = draw(
-        labs_df=labs_df,
-        reactions_df=reactions_df,
-        conditions_df=conditions_df,
+    substrate_reactions_df = REACTIONS_DF[REACTIONS_DF["input"] == curie]
+    substrate_reaction_ids = substrate_reactions_df["reaction"]
+    substrate_conditions_df = CONDITIONS_DF[
+        CONDITIONS_DF["reaction"].isin(substrate_reaction_ids)
+    ]
+    substrate_diagram = draw_bytes(
+        labs_df=LABS_DF,
+        reactions_df=substrate_reactions_df,
+        conditions_df=substrate_conditions_df,
+        reaction_hierarchy_df=REACTION_HIERARCHY_DF,
         direction="TD",
         group_closed_loop=False,
     )
-    b64_bytes = base64.b64encode(diagram_bytes)
-    b64_str = b64_bytes.decode("ascii")
+
+    product_reactions_df = REACTIONS_DF[REACTIONS_DF["output"] == curie]
+    product_reaction_ids = product_reactions_df["reaction"]
+    product_conditions_df = CONDITIONS_DF[
+        CONDITIONS_DF["reaction"].isin(product_reaction_ids)
+    ]
+    product_diagram = draw_bytes(
+        labs_df=LABS_DF,
+        reactions_df=product_reactions_df,
+        conditions_df=product_conditions_df,
+        reaction_hierarchy_df=REACTION_HIERARCHY_DF,
+        direction="TD",
+        group_closed_loop=False,
+    )
 
     return flask.render_template(
         "entity.html",
         name=name,
         description=description,
         image_url=image_url,
-        reactions=reactions_df,
-        conditions=conditions_df,
-        diagram=b64_str,
+        reactions=substrate_reactions_df,
+        conditions=substrate_conditions_df,
+        input_diagram=substrate_diagram,
+        product_diagram=product_diagram,
     )
 
 

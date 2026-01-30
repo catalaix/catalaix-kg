@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ name }}</h2>
+<p>
+    {% if image_url %}<img src="{{ image_url}}" align="right"/>{% endif %}
+    {{ description }}
+</p>
+{% endblock %}
