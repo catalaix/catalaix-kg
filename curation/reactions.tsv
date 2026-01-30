@@ -36,8 +36,8 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 35	PET	CHEBI:53259	PET			CHEBI:747257	n-butyl 4-(hydroxymethyl)benzoate	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1002/anie.202408561
 36	PLA	CHEBI:53407	PLA			CHEBI:83219	lactate ester			MOP:0000620	alcholysis		
 37	PLA	CHEBI:53407	PLA	CHEBI:16236	ethanol	CHEBI:78321	ethyl lactate			MOP:0000624	ethanolysis		https://doi.org/10.1002/asia.202201195
-38	PLA	CHEBI:53407	PLA		n-BuOH		n-butyl lactate			MOP:0000626	butanolysis		https://doi.org/10.1002/asia.202201195
-39	PLA	CHEBI:53407	PLA		i-BuOH		i-butyl lactate			MOP:0000626	butanolysis		https://doi.org/10.1002/asia.202201195
-40	PLA	CHEBI:53407	PLA		BnOH		benyzl lactate			MOP:0000620	alcholysis		https://doi.org/10.1002/asia.202201195
-41	PLA	CHEBI:53407	PLA		AllylOH		allyl lactate			MOP:0000620	alcholysis		https://doi.org/10.1002/asia.202201195
-42	PLA	CHEBI:53407	PLA		BnNH2		???			MOP:0000620	alcholysis		https://doi.org/10.1002/asia.202201195
+38	PLA	CHEBI:53407	PLA	CHEBI:28885	butanol	CHEBI:169137	n-butyl lactate			MOP:0000626	butanolysis		https://doi.org/10.1002/asia.202201195
+39	PLA	CHEBI:53407	PLA	CHEBI:46645	isobutanol	CHEBI:747274	i-butyl lactate			MOP:0000626	butanolysis		https://doi.org/10.1002/asia.202201195
+40	PLA	CHEBI:53407	PLA	CHEBI:17987	BnOH	CHEBI:747275	benyzl lactate			MOP:0000620	alcholysis		https://doi.org/10.1002/asia.202201195
+41	PLA	CHEBI:53407	PLA	CHEBI:16605	AllylOH	CHEBI:747276	allyl lactate			MOP:0000620	alcholysis		https://doi.org/10.1002/asia.202201195
+42	PLA	CHEBI:53407	PLA	CHEBI:40538	BnNH2	CHEBI:747277	benzyl lactamide			MOP:0000620	alcholysis		https://doi.org/10.1002/asia.202201195
