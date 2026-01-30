@@ -42,7 +42,7 @@
         <td>
             {%- if row['catalyst'] is string %}
             {%- if row['catalyst']  != "no catalyst" %}
-            <a href="{{ url_for('get_entity', curie=row['catalyst']) }}">{{ row['catalyst name'] }}</a>
+            <a href="{{ url_for('get_catalyst', curie=row['catalyst']) }}">{{ row['catalyst name'] }}</a>
             {% else %}
             No Catalyst
             {% endif %}

@@ -127,9 +127,25 @@ def get_group(group: int) -> str:
 
 @app.route("/catalyst/<curie>")
 def get_catalyst(curie: str) -> str:
+    name = pyobo.get_name(curie)
+    description = pyobo.get_definition(curie)
+    if curie.startswith("CHEBI:"):
+        image_url = f"https://bioregistry.io/{curie}?provider=chebi-img"
+    else:
+        image_url = None
+
+    conditions = CONDITIONS_DF[CONDITIONS_DF["catalyst"] == curie]
+    groups = conditions[["group", "group name"]].drop_duplicates()
+    people = conditions[["chemist", "chemist name"]].drop_duplicates()
     return flask.render_template(
         "catalyst.html",
-        conditions=CONDITIONS_DF[CONDITIONS_DF["catalyst"] == curie],
+        curie=curie,
+        name=name,
+        description=description,
+        image_url=image_url,
+        conditions=conditions,
+        groups=groups,
+        people=people,
     )
 
 

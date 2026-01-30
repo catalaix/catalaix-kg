@@ -6,4 +6,22 @@
     {% if image_url %}<img src="{{ image_url}}" align="right"/>{% endif %}
     {{ description }}
 </p>
+
+<h3>Groups</h3>
+<ul>
+    {% for group, group_name in groups.values %}
+    <li><a href="{{ url_for('get_group', group=group) }}">{{ group_name }}</a></li>
+    {% endfor %}
+</ul>
+
+<h3>People</h3>
+<ul>
+    {% for orcid, person_name in people.values %}
+    <li><a href="{{ url_for('get_person', orcid=orcid) }}">{{ person_name }}</a></li>
+    {% endfor %}
+</ul>
+
+<h3>Experiments</h3>
+{{ experiments_table(conditions, show_chemist=True, show_group=True) }}
+
 {% endblock %}
