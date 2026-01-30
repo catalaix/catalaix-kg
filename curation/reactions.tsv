@@ -8,7 +8,7 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 7	PET	CHEBI:53259	PET	CHEBI:17790	methanol	CHEBI:156286	DMT			MOP:0000623	methanolysis		https://doi.org/10.1002/cssc.202300192
 8	PET	CHEBI:53259	PET	CHEBI:16000	ethanolamine	CHEBI:747240	BHETA			MOP:0000621	aminolysis		https://doi.org/10.1039/D4SU00658E
 9	PET	CHEBI:53259	PET	CHEBI:30630	propylenediamine	CHEBI:747250	diaminopropylterephthalamide			MOP:0000621	aminolysis	In addition to ethanolamine, other amines like liquid ammonia and aliphatic polyamines, such as 1,3-diaminopropane (DAP), ethylenediamine, diethyltriamine (DETA), triethyltetramine (TETA), are also used for the aminolysis of PET. These polyamines from intermediates with PET that can react with other substances to produce valuable chemicals or industrial materials.	https://doi.org/10.1039/D4SU00658E, figure 15
-10	PET	CHEBI:231672	BHET			CHEBI:53259	PET	CHEBI:30742	ethylene glycol	MOP:0000644	polycondensation	chemical catalysis (already on industry scale)
+10	PET	CHEBI:231672	BHET			CHEBI:53259	PET	CHEBI:30742	ethylene glycol	MOP:0000644	polycondensation	chemical catalysis (already on industry scale)	
 11	PET	CHEBI:231672	BHET			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://onlinelibrary.wiley.com/doi/10.1002/jobm.202000053
 12	PET	CHEBI:53259	PET			CHEBI:15702	TPA			MOP:0000619	hydrolysis		https://doi.org/10.1002/anie.202117528
 13	PET	CHEBI:156286	DMT	CHEBI:18276	H₂	CHEBI:747241	DMCD			MOP:0000589	hydrogenation		https://doi.org/10.1039/D4SU00658E
@@ -24,7 +24,7 @@ reaction	kingdom	input	input name	reagent	reagent name	output	output name	output
 23	PET	CHEBI:53259	PET	CHEBI:28938	ammonium	CHEBI:38802	terephthalamide			MOP:0000621	aminolysis		https://doi.org/10.1002/cssc.202100400
 24	PET	CHEBI:38802	terephthalamide			CHEBI:747247	terephthalonitrile			MOP:0000569	reduction		https://doi.org/10.1002/cssc.202100400
 25	PET	CHEBI:747247	terephthalonitrile			CHEBI:747248	p-xylenediamine 			MOP:0000589	hydrogenation		https://doi.org/10.1002/cssc.202100400
-26	PET	CHEBI:747247	terephthalonitrile			CHEBI:747249	1,4-bis(aminomethyl)cyclohexane			MOP:0000589	hydrogenation
+26	PET	CHEBI:747247	terephthalonitrile			CHEBI:747249	1,4-bis(aminomethyl)cyclohexane			MOP:0000589	hydrogenation		
 27	PET	CHEBI:747250	diaminopropylterephthalamide	CHEBI:16008	salicylaldehyde	CHEBI:747251	HBAPTPA			RXNO:0000335	reductive amination		https://doi.org/10.1039/D4SU00658E, figure 15
 28	PET	CHEBI:53259	PET			CHEBI:747252	1,4-di(hydroxymethyl)benzene				hydrogenolysis		https://doi.org/10.1126/sciadv.aat9669
 29	PET	CHEBI:53259	PET			CHEBI:27417	p-xylene	CHEBI:30742	ethylene glycol		hydrogenative depolymerization		https://doi.org/10.1039/D3GC03145D|https://doi.org/10.1021/acssuschemeng.3c08206|https://doi.org/10.1002/cssc.202402013

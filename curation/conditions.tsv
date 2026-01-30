@@ -3,14 +3,14 @@ reaction	homogenous?	phase	type	solvent	temperature	time	yield (%)	k [min^-1]	ca
 7	yes	liquid	inorganic catalysis						CHEBI:747215	[ZnCl₂(TMGeech)]		Martin Fuchs	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202300192
 6	yes	liquid	inorganic catalysis							[Zn(DMEG2ch)₂]	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
 7	yes	liquid	inorganic catalysis							[Zn(DMEG2ch)₂]	0009-0007-5243-1952	Tabea Becker	4	Herres-Pawlis	https://doi.org/10.1002/cssc.202400933
-7			microbe							PETase					https://doi.org/10.1016/j.synbio.2025.07.013
-12			microbe							MHETase					https://doi.org/10.1016/j.synbio.2025.07.013
-10			inorganic catalysis						CHEBI:82289	Sb₂O₃					https://doi.org/10.1002/cssc.202100400
-10			inorganic catalysis							Sb(OAc)₃					https://doi.org/10.1002/cssc.202100400
-23			inorganic catalysis						CHEBI:62984	zinc acetate					https://doi.org/10.1002/cssc.202100400
+7			microbe							PETase			0	External	https://doi.org/10.1016/j.synbio.2025.07.013
+12			microbe							MHETase			0	External	https://doi.org/10.1016/j.synbio.2025.07.013
+10			inorganic catalysis						CHEBI:82289	Sb₂O₃			0	External	https://doi.org/10.1002/cssc.202100400
+10			inorganic catalysis							Sb(OAc)₃			0	External	https://doi.org/10.1002/cssc.202100400
+23			inorganic catalysis						CHEBI:62984	zinc acetate			0	External	https://doi.org/10.1002/cssc.202100400
 28			inorganic catalysis							Ru(triphos-xyl)methylallyl	0000-0001-5225-4393	Stefan Westhues	1	Klankenmeyer	https://doi.org/10.1126/sciadv.aat9669
-7	yes	solid	mechanical	same as reagent	RT				N/A						https://pubs.rsc.org/en/content/articlehtml/2024/gc/d3gc03643j
-7	yes	solid	mechanical	same as reagent	RT				CaO	Calcium oxide					https://pubs.rsc.org/en/content/articlehtml/2024/gc/d3gc03643j
+7	yes	solid	mechanical	same as reagent	RT				no catalyst				0	External	https://pubs.rsc.org/en/content/articlehtml/2024/gc/d3gc03643j
+7	yes	solid	mechanical	same as reagent	RT				CaO	Calcium oxide			0	External	https://pubs.rsc.org/en/content/articlehtml/2024/gc/d3gc03643j
 7	yes	solid	mechanical	same as reagent	RT				K₂CO3	Potassium carbonate	0009-0003-9731-4347	Sebastian Schier	3	Pich	unpublished
 1	yes	liquid	inorganic catalysis	THF	50	6	14	0.0016		[FeCl2(TMG5NMe2asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
 37	yes	liquid	inorganic catalysis	THF	60	6		0.0030		[FeCl2(TMG5NMe2asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195

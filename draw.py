@@ -85,7 +85,7 @@ def draw(
         ["reaction", "type", "group"]
     ].values:
         reaction_to_group_names[reaction][reaction_type].add(
-            lab_id_to_name[group] if pd.notna(group) else "External Group"
+            lab_id_to_name[group] if pd.notna(group) and group else "External"
         )
 
     graph = pgv.AGraph(directed=True)
@@ -170,7 +170,7 @@ def draw(
             label_parts.append(reaction_type)
         if type_to_groups := reaction_to_group_names.get(reaction_id):
             for rtype, groups in type_to_groups.items():
-                groups_text = ",".join(sorted(groups))
+                groups_text = ", ".join(sorted(groups))
                 label_parts.append(f"{rtype} ({groups_text})")
 
         label = "\n".join(label_parts)
