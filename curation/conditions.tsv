@@ -13,10 +13,10 @@ reaction	homogenous?	phase	type	solvent	temperature	time	yield (%)	k [min^-1]	ca
 7	yes	solid	mechanical	same as reagent	RT				CHEBI:31344	CaO			0	External	https://pubs.rsc.org/en/content/articlehtml/2024/gc/d3gc03643j
 7	yes	solid	mechanical	same as reagent	RT				CHEBI:131526	K₂CO₃	0009-0003-9731-4347	Sebastian Schier	3	Pich	unpublished
 1	yes	liquid	inorganic catalysis	THF	50	6.0	14.0	0.0016	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
-37	yes	liquid	inorganic catalysis	THF	60	6.0	40	0.0030	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
-38	yes	liquid	inorganic catalysis	THF	60	6.0	76	0.0076	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
-39	yes	liquid	inorganic catalysis	THF	60	6.0	37	0.0035	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
-40	yes	liquid	inorganic catalysis	THF	60	6.0	74	n.d.	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
-41	yes	liquid	inorganic catalysis	THF	60	6.0	100	n.d.	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
-42	yes	liquid	inorganic catalysis	THF	60	1.0	81	n.d.	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
-42	yes	liquid	inorganic catalysis	THF	60	1.0	27	n.d.	no catalyst	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
+37	yes	liquid	inorganic catalysis	THF	60	6.0	40.0	0.0030	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
+38	yes	liquid	inorganic catalysis	THF	60	6.0	76.0	0.0076	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
+39	yes	liquid	inorganic catalysis	THF	60	6.0	37.0	0.0035	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
+40	yes	liquid	inorganic catalysis	THF	60	6.0	74.0	n.d.	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
+41	yes	liquid	inorganic catalysis	THF	60	6.0	100.0	n.d.	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
+42	yes	liquid	inorganic catalysis	THF	60	1.0	81.0	n.d.	CHEBI:747278	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
+42	yes	liquid	inorganic catalysis	THF	60	1.0	27.0	n.d.	no catalyst	[FeCl₂(TMG5NMe₂asme)]	0009-0003-7051-6782	Lisa Burkart	4	Herres-Pawlis	https://doi.org/10.1002/asia.202201195
