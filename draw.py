@@ -63,10 +63,12 @@ def draw(
     labs_df: pd.DataFrame,
     reactions_df: pd.DataFrame,
     conditions_df: pd.DataFrame,
+    reaction_hierarchy_df: pd.DataFrame,
     *,
     add_reagent: bool = False,
     add_output_2: bool = False,
     group_closed_loop: bool = True,
+    draw_reaction_hierarchy: bool = True,
     direction: Literal["LR", "TD"] = "LR",
     output: Path | None = None,
 ) -> None | str:
@@ -178,6 +180,11 @@ def draw(
 
         if group_closed_loop and reactant_1 in HIGHLIGHT and product_1 in HIGHLIGHT:
             sub.add_node(reaction_id)
+
+    if draw_reaction_hierarchy:
+        for child, parent in reaction_hierarchy_df.values:
+            if child in graph and parent in graph:
+                graph.add_edge(child, parent, label="is a")
 
     return graph.draw(output, format="png", prog="dot")
 
