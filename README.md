@@ -14,7 +14,8 @@ It contains the following manually curated artifacts:
    like the catalyst/microbe, byproducts, conditions and provenance information
    like the group that ran the reactions and literature references where the
    conditions were used
-5. the [labs](curation/labs.tsv) within the consortium
+5. the [labs](curation/labs.tsv) within the consortium and their
+   [members](curation/memberships.tsv)
 
 ![](output/PET.png)
 
