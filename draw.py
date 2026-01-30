@@ -23,8 +23,9 @@ import cairosvg
 HERE = Path(__file__).parent.resolve()
 IMG = HERE.joinpath("img")
 CURATION = HERE.joinpath("curation")
-OUT = HERE.joinpath("graph.png")
+OUTPUT = HERE.joinpath("output")
 REACTIONS_PATH = CURATION.joinpath("reactions.tsv")
+REACTION_HIERARCHY_PATH = CURATION.joinpath("reaction_hierarchy.tsv")
 CONDITIONS_PATH = CURATION.joinpath("conditions.tsv")
 LABS_PATH = CURATION.joinpath("labs.tsv")
 
@@ -43,20 +44,23 @@ def main(
     group_closed_loop: bool = True,
     direction: Literal["LR", "TD"] = "LR",
 ) -> None:
-    reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
-    reactions_df = reactions_df[reactions_df["kingdom"] == "PET"]
     conditions_df = pd.read_csv(CONDITIONS_PATH, sep="\t")
     labs_df = pd.read_csv(LABS_PATH, sep="\t")
-    return draw(
-        labs_df=labs_df,
-        reactions_df=reactions_df,
-        conditions_df=conditions_df,
-        add_reagent=add_reagent,
-        add_output_2=add_output_2,
-        group_closed_loop=group_closed_loop,
-        direction=direction,
-        output=OUT,
-    )
+    reactions_df = pd.read_csv(REACTIONS_PATH, sep="\t")
+    reaction_hierarchy_df = pd.read_csv(REACTION_HIERARCHY_PATH, sep="\t")
+
+    for kingdom, kingdom_df in reactions_df.groupby("kingdom"):
+        draw(
+            labs_df=labs_df,
+            reactions_df=kingdom_df,
+            conditions_df=conditions_df,
+            reaction_hierarchy_df=reaction_hierarchy_df,
+            add_reagent=add_reagent,
+            add_output_2=add_output_2,
+            group_closed_loop=group_closed_loop,
+            direction=direction,
+            output=OUTPUT.joinpath(f"{kingdom}.png"),
+        )
 
 
 def draw(
@@ -113,11 +117,6 @@ def draw(
 
     add_node_for = {curie for curies in reactions_df[keep].values for curie in curies}
 
-    if group_closed_loop:
-        sub = graph.add_subgraph(name="cluster_0", label="Closed Loop", color="blue")
-        for node in HIGHLIGHT:
-            sub.add_node(node)
-
     for curie, name in curies.items():
         if not curie.startswith("CHEBI:"):
             png_path = None
@@ -149,6 +148,12 @@ def draw(
                     color="blue"  # border color
                 )
             graph.add_node(curie, **node_attrs)
+
+    if group_closed_loop:
+        sub = graph.add_subgraph(name="cluster_0", label="Closed Loop", color="blue")
+        for node in HIGHLIGHT:
+            if node in graph:
+                sub.add_node(node)
 
     for (
         reaction_id,

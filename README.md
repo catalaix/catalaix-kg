@@ -14,7 +14,7 @@ It contains the following manually curated artifacts:
    were used
 4. the [labs](curation/labs.tsv) within the consortium
 
-![](graph.png)
+![](output/PET.png)
 
 Later:
 
