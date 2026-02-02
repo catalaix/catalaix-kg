@@ -16,7 +16,6 @@ from collections import defaultdict
 
 import pandas as pd
 import pubmed_downloader
-import pystow
 from curies import Reference
 from opencitations_client.cache import get_incoming_citations, get_outgoing_citations
 from opencitations_client.download import (
@@ -28,16 +27,12 @@ from pystow.utils import safe_open_writer
 from tqdm import tqdm
 from constants import HERE
 
-PAPERS_TSV_PATH = HERE.joinpath("literature.tsv")
-PAPERS_JSONL_PATH = HERE.joinpath("literature.jsonl")
-CITATIONS_PATH = HERE.joinpath("citations.tsv")
-
-OPENCITATIONS_MOD = pystow.module("opencitations")
-INCOMING_MOD = OPENCITATIONS_MOD.module("incoming")
-OUTGOING_MOD = OPENCITATIONS_MOD.module("outgoing")
+CACHE_DIR = HERE.joinpath("cache")
+PAPERS_TSV_PATH = CACHE_DIR.joinpath("literature.tsv")
+CITATIONS_PATH = CACHE_DIR.joinpath("citations.tsv")
 
 
-def main(use_pubmed: bool = True, minimum_year: int = 2015) -> None:
+def main(use_pubmed: bool = True) -> None:
     labs_df = pd.read_csv(HERE.joinpath("curation", "labs.tsv"), sep="\t")
 
     pubmed_ids: defaultdict[str, set[str]] = defaultdict(set)
