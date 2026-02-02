@@ -1,9 +1,16 @@
-"""Get papers.
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "curies>=0.12.9",
+#     "opencitations-client>=0.0.7",
+#     "pandas>=3.0.0",
+#     "pubmed-downloader>=0.0.12",
+#     "pystow>=0.7.21",
+#     "tqdm>=4.67.2",
+# ]
+# ///
 
-1. Search for papers attached to ORCiD
-2. Search for papers attached to Wikidata
-3. Search PubMed
-"""
+"""Find papers authored by catalaix consortium members, cited by them, and that cite them."""
 
 from collections import defaultdict
 
@@ -11,7 +18,7 @@ import pandas as pd
 import pubmed_downloader
 import pystow
 from curies import Reference
-from opencitations_client.db import get_incoming_citations, get_outgoing_citations
+from opencitations_client.cache import get_incoming_citations, get_outgoing_citations
 from opencitations_client.download import (
     get_omid_from_pubmed,
     get_omid_from_doi,
