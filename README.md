@@ -18,3 +18,9 @@ This repository contains the demo for the Catalaix knowledge graph (KG):
    the consortium, and an induced citation network
 
 ![](output/PET.png)
+
+
+Material Flow Graph Between Groups - nodes are groups,
+edges exist when one group has a reaction that produces
+a product that another group has a reaction that consumes
+it
