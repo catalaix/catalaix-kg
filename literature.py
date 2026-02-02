@@ -7,18 +7,23 @@
 
 from collections import defaultdict
 
-import click
 import pandas as pd
 import pubmed_downloader
 import pystow
 from curies import Reference
-from opencitations_client import get_incoming_citations, get_outgoing_citations
-from pystow.utils import safe_open_writer, write_pydantic_jsonl
+from opencitations_client.db import get_incoming_citations, get_outgoing_citations
+from opencitations_client.download import (
+    get_omid_from_pubmed,
+    get_omid_from_doi,
+    get_pubmed_from_omid,
+)
+from pystow.utils import safe_open_writer
 from tqdm import tqdm
 from constants import HERE
 
 PAPERS_TSV_PATH = HERE.joinpath("literature.tsv")
 PAPERS_JSONL_PATH = HERE.joinpath("literature.jsonl")
+CITATIONS_PATH = HERE.joinpath("citations.tsv")
 
 OPENCITATIONS_MOD = pystow.module("opencitations")
 INCOMING_MOD = OPENCITATIONS_MOD.module("incoming")
@@ -41,26 +46,34 @@ def main(use_pubmed: bool = True, minimum_year: int = 2015) -> None:
         pubmed_downloader.get_articles(pubmed_ids, progress=True, error_strategy="skip")
     )
 
-    for article in tqdm(
-        articles, unit="article", unit_scale=True, desc="retrieving citations"
-    ):
-        if not article.date_published or article.date_published.year < minimum_year:
-            continue
-        if doi_reference := _get_doi(article):
-            incoming_path = INCOMING_MOD.join(name=f"{article.pubmed}.jsonl")
-            if not incoming_path.is_file():
-                incoming_citations = get_incoming_citations(doi_reference)
-                write_pydantic_jsonl(incoming_citations, incoming_path)
-            outgoing_path = OUTGOING_MOD.join(name=f"{article.pubmed}.jsonl")
-            if not outgoing_path.is_file():
-                outgoing_citations = get_outgoing_citations(doi_reference)
-                write_pydantic_jsonl(outgoing_citations, outgoing_path)
+    extra_pmids: set[str] = set()
+    with safe_open_writer(CITATIONS_PATH) as citations_writer:
+        for article in tqdm(
+            articles, unit="article", unit_scale=True, desc="retrieving citations"
+        ):
+            omid = get_omid_from_pubmed(article.pubmed)
+            if not omid and (doi := _get_doi(article)):
+                omid = get_omid_from_doi(doi)
+            if not omid:
+                continue
+            omid_reference = Reference(prefix="omid", identifier=omid)
 
-    with_cites = 0
-    with (
-        PAPERS_JSONL_PATH.open("w") as file,
-        safe_open_writer(PAPERS_TSV_PATH) as writer,
-    ):
+            for incoming_omid in get_incoming_citations(omid_reference):
+                if incoming_pubmed := get_pubmed_from_omid(incoming_omid):
+                    citations_writer.writerow((incoming_pubmed, str(article.pubmed)))
+                    extra_pmids.add(incoming_pubmed)
+            for outgoing_omid in get_outgoing_citations(omid_reference):
+                if outgoing_pubmed := get_pubmed_from_omid(outgoing_omid):
+                    citations_writer.writerow((str(article.pubmed), outgoing_pubmed))
+                    extra_pmids.add(outgoing_pubmed)
+
+    articles.extend(
+        pubmed_downloader.get_articles(
+            extra_pmids.difference(pubmed_ids), progress=True, error_strategy="skip"
+        )
+    )
+
+    with safe_open_writer(PAPERS_TSV_PATH) as writer:
         writer.writerow(["pubmed", "year", "title", "professors"])
         for article in articles:
             writer.writerow(
@@ -68,27 +81,15 @@ def main(use_pubmed: bool = True, minimum_year: int = 2015) -> None:
                     article.pubmed,
                     article.date_published.year if article.date_published else None,
                     article.title,
-                    ",".join(sorted(pubmed_ids[str(article.pubmed)])),
+                    ",".join(sorted(pubmed_ids.get(str(article.pubmed), []))),
                 )
             )
-            file.write(
-                article.model_dump_json(
-                    exclude_none=True, exclude_unset=True, exclude_defaults=True
-                )
-                + "\n"
-            )
-            if article.cites_pubmed_ids:
-                with_cites += 1
-
-    click.echo(
-        f"with citations: {with_cites:,}/{len(articles):,} ({with_cites / len(articles):.1%})"
-    )
 
 
-def _get_doi(article: pubmed_downloader.Article) -> Reference | None:
+def _get_doi(article: pubmed_downloader.Article) -> str | None:
     for xref in article.xrefs:
         if xref.prefix == "doi":
-            return xref
+            return xref.identifier
     return None
 
 
