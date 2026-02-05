@@ -17,11 +17,12 @@ from collections import defaultdict
 import pandas as pd
 import pubmed_downloader
 from curies import Reference
-from opencitations_client.cache import get_incoming_citations, get_outgoing_citations
-from opencitations_client.download import (
-    get_omid_from_pubmed,
+from opencitations_client import (
+    get_incoming_citations,
+    get_outgoing_citations,
     get_omid_from_doi,
     get_pubmed_from_omid,
+    get_omid_from_pubmed,
 )
 from pystow.utils import safe_open_writer
 from tqdm import tqdm
@@ -60,11 +61,15 @@ def main(use_pubmed: bool = True) -> None:
                 continue
             omid_reference = Reference(prefix="omid", identifier=omid)
 
-            for incoming_omid in get_incoming_citations(omid_reference):
+            for incoming_omid in get_incoming_citations(
+                omid_reference, backend="local", return_type="str"
+            ):
                 if incoming_pubmed := get_pubmed_from_omid(incoming_omid):
                     citations_writer.writerow((incoming_pubmed, str(article.pubmed)))
                     extra_pmids.add(incoming_pubmed)
-            for outgoing_omid in get_outgoing_citations(omid_reference):
+            for outgoing_omid in get_outgoing_citations(
+                omid_reference, backend="local", return_type="str"
+            ):
                 if outgoing_pubmed := get_pubmed_from_omid(outgoing_omid):
                     citations_writer.writerow((str(article.pubmed), outgoing_pubmed))
                     extra_pmids.add(outgoing_pubmed)
@@ -77,15 +82,15 @@ def main(use_pubmed: bool = True) -> None:
 
     with safe_open_writer(PAPERS_TSV_PATH) as writer:
         writer.writerow(["pubmed", "year", "title", "professors"])
-        for article in articles:
-            writer.writerow(
-                (
-                    article.pubmed,
-                    article.date_published.year if article.date_published else None,
-                    article.title,
-                    ",".join(sorted(pubmed_ids.get(str(article.pubmed), []))),
-                )
+        writer.writerows(
+            (
+                article.pubmed,
+                article.date_published.year if article.date_published else None,
+                article.title,
+                ",".join(sorted(pubmed_ids.get(str(article.pubmed), []))),
             )
+            for article in articles
+        )
 
 
 def _get_doi(article: pubmed_downloader.Article) -> str | None:
