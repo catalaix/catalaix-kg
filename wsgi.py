@@ -22,6 +22,7 @@ from constants import (
     MEMBERSHIPS_PATH,
     CLOSED_LOOPS_PATH,
     CHEMICAL_HIERARCHY_PATH,
+    PAPERS_PATH,
 )
 from draw import draw_bytes
 
@@ -38,6 +39,8 @@ def _get_catalysts_df(conditions: pd.DataFrame) -> pd.DataFrame:
 CHEMICAL_HIERARCHY_DF = pd.read_csv(CHEMICAL_HIERARCHY_PATH, sep="\t")
 CLOSED_LOOPS_DF = pd.read_csv(CLOSED_LOOPS_PATH, sep="\t")
 LABS_DF = pd.read_csv(LABS_PATH, sep="\t")
+PROFESSOR_TO_GROUP = dict(LABS_DF[["Professor", "group"]].values)
+
 REACTIONS_DF = pd.read_csv(REACTIONS_PATH, sep="\t")
 del REACTIONS_DF["desc."]
 REACTION_HIERARCHY_DF = pd.read_csv(REACTION_HIERARCHY_PATH, sep="\t")
@@ -74,6 +77,13 @@ CATALYST_GROUPING = CONDITIONS_DF[
 
 SUBSTRATE_GROUPING = REACTIONS_DF.groupby(["input", "input name"])
 PRODUCT_GROUPING = REACTIONS_DF.groupby(["output", "output name"])
+
+LITERATURE_DF = pd.read_csv(PAPERS_PATH, sep="\t", dtype=str)
+GROUP_TO_PAPERS = defaultdict(set)
+for _, row in LITERATURE_DF.iterrows():
+    if pd.notna(professors := row["professors"]):
+        for professor in professors.split(","):
+            GROUP_TO_PAPERS[PROFESSOR_TO_GROUP[professor]].add(row["pubmed"])
 
 
 @app.route("/")
@@ -116,12 +126,15 @@ def get_group(group: int) -> str:
     members = MEMBERSHIPS_DF[MEMBERSHIPS_DF["lab"] == group]
     conditions = CONDITIONS_DF[CONDITIONS_DF["chemist"].isin(GROUP_TO_ORCIDS[group])]
     catalysts = _get_catalysts_df(conditions)
+    papers = GROUP_TO_PAPERS[group]
+    literature = LITERATURE_DF[LITERATURE_DF["pubmed"].isin(papers)]
     return flask.render_template(
         "group.html",
         data=data,
         members=members,
         conditions=conditions,
         catalysts=catalysts,
+        literature=literature,
     )
 
 
@@ -198,6 +211,13 @@ def get_entity(curie: str) -> str:
         product_diagram=product_diagram,
         product_conditions=product_conditions_df,
     )
+
+
+@app.route("/paper/<pubmed>")
+def get_paper(pubmed: str) -> str:
+    """Get a page for a paper."""
+    row = LITERATURE_DF[LITERATURE_DF["pubmed"] == pubmed].iloc[0].to_dict()
+    return flask.render_template("paper.html", data=row)
 
 
 if __name__ == "__main__":

@@ -36,4 +36,24 @@
 <h3>Experiments</h3>
 {{ experiments_table(conditions, show_chemist=True) }}
 
+<h3>Literature</h3>
+<table class="table table-striped table-responsive">
+    <thead>
+    <tr>
+        <td>PubMed</td>
+        <td>Year</td>
+        <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
+    {%- for _, row in literature.iterrows() %}
+    <tr>
+        <td><a href="{{ url_for('get_paper', pubmed=row['pubmed']) }}">{{ row['pubmed'] }}</a></td>
+        <td>{{ row['year'] | int }}</td>
+        <td>{{ row['title'] }}</td>
+    </tr>
+    {%- endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

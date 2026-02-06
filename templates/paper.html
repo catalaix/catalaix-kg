@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ data['title'] }}</h2>
+
+<dl>
+    <dt>PubMed</dt>
+    <dd><a href="https://semantic.farm/pubmed:{{ data['pubmed'] }}">{{ data['pubmed'] }}</a></dd>
+    <dt>Year</dt>
+    <dd>{{ data['year'] }}</dd>
+</dl>
+
+{% endblock %}
