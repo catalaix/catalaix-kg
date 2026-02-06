@@ -14,7 +14,7 @@
 </div>
 {% endmacro %}
 
-{% macro experiments_table(conditions_df, show_chemist=False, show_group=False) %}
+{% macro experiments_table(conditions_df, show_chemist=False, show_group=False, show_reference=True) %}
 <table class="table table-striped">
     <thead>
     <tr>
@@ -24,7 +24,10 @@
         <th scope="col">Catalyst</th>
         <th scope="col">Yield (%)</th>
         <th scope="col">K Cat [min^-1]</th>
+        {%- if show_reference %}
         <th scope="col">DOI</th>
+        <th scope="col">PubMed</th>
+        {%- endif %}
         {% if show_chemist %}
         <th scope="col">Person</th>
         {% endif %}
@@ -52,8 +55,14 @@
         </td>
         <td align="right">{{ row['yield (%)'] }}</td>
         <td align="right">{{ row['k [min^-1]'] }}</td>
-        <td><a href="{{ row['references_condition'] }}">{{ row['references_condition'].removeprefix('https://doi.org/')
-            }}</a></td>
+        {%- if show_reference %}
+        <td>{{ row['doi']}}</td>
+        <td>
+            {% if row['pubmed'] %}
+            <a href="{{ url_for('get_paper', pubmed=row['pubmed']) }}">{{ row['pubmed'] }}</a>
+            {% endif %}
+        </td>
+        {%- endif %}
         {%- if show_chemist %}
         <td>
             {%- if row['chemist'] is string %}

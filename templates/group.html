@@ -41,16 +41,18 @@
     <thead>
     <tr>
         <td>PubMed</td>
-        <td>Year</td>
+        <td>Date</td>
         <td>Title</td>
+        <td>Is Review?</td>
     </tr>
     </thead>
     <tbody>
     {%- for _, row in literature.iterrows() %}
     <tr>
         <td><a href="{{ url_for('get_paper', pubmed=row['pubmed']) }}">{{ row['pubmed'] }}</a></td>
-        <td>{{ row['year'] | int }}</td>
+        <td>{{ row['date'] }}</td>
         <td>{{ row['title'] }}</td>
+        <td>{{ row['is_review'] }}</td>
     </tr>
     {%- endfor %}
     </tbody>

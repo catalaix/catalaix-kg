@@ -41,12 +41,33 @@ CLOSED_LOOPS_DF = pd.read_csv(CLOSED_LOOPS_PATH, sep="\t")
 LABS_DF = pd.read_csv(LABS_PATH, sep="\t")
 PROFESSOR_TO_GROUP = dict(LABS_DF[["Professor", "group"]].values)
 
+LITERATURE_DF = pd.read_csv(PAPERS_PATH, sep="\t", dtype=str).sort_values(
+    "date", ascending=False
+)
+LITERATURE_DF["is_review"] = LITERATURE_DF["types"].map(
+    lambda types: "D016454" in types
+)
+GROUP_TO_PUBMEDS = defaultdict(set)
+GROUP_TO_DOIS = defaultdict(set)
+for _, row in LITERATURE_DF.iterrows():
+    if pd.notna(professors := row["professors"]):
+        for professor in professors.split(","):
+            GROUP_TO_PUBMEDS[PROFESSOR_TO_GROUP[professor]].add(row["pubmed"])
+            if pd.notna(row["doi"]):
+                GROUP_TO_DOIS[PROFESSOR_TO_GROUP[professor]].add(row["doi"].lower())
+
+DOI_TO_PUBMED = dict(
+    LITERATURE_DF[LITERATURE_DF["doi"].notna()][["doi", "pubmed"]].values
+)
+
+
 REACTIONS_DF = pd.read_csv(REACTIONS_PATH, sep="\t")
 del REACTIONS_DF["desc."]
 REACTION_HIERARCHY_DF = pd.read_csv(REACTION_HIERARCHY_PATH, sep="\t")
 CONDITIONS_DF = pd.read_csv(CONDITIONS_PATH, sep="\t").join(
     REACTIONS_DF, on="reaction", how="left", rsuffix="_reaction", lsuffix="_condition"
 )
+CONDITIONS_DF["pubmed"] = CONDITIONS_DF["doi"].map(DOI_TO_PUBMED)
 
 MEMBERSHIPS_DF = pd.read_csv(MEMBERSHIPS_PATH, sep="\t")
 ORCID_TO_GROUPS: defaultdict[str, set[int]] = defaultdict(set)
@@ -77,13 +98,6 @@ CATALYST_GROUPING = CONDITIONS_DF[
 
 SUBSTRATE_GROUPING = REACTIONS_DF.groupby(["input", "input name"])
 PRODUCT_GROUPING = REACTIONS_DF.groupby(["output", "output name"])
-
-LITERATURE_DF = pd.read_csv(PAPERS_PATH, sep="\t", dtype=str)
-GROUP_TO_PAPERS = defaultdict(set)
-for _, row in LITERATURE_DF.iterrows():
-    if pd.notna(professors := row["professors"]):
-        for professor in professors.split(","):
-            GROUP_TO_PAPERS[PROFESSOR_TO_GROUP[professor]].add(row["pubmed"])
 
 
 @app.route("/")
@@ -126,7 +140,7 @@ def get_group(group: int) -> str:
     members = MEMBERSHIPS_DF[MEMBERSHIPS_DF["lab"] == group]
     conditions = CONDITIONS_DF[CONDITIONS_DF["chemist"].isin(GROUP_TO_ORCIDS[group])]
     catalysts = _get_catalysts_df(conditions)
-    papers = GROUP_TO_PAPERS[group]
+    papers = GROUP_TO_PUBMEDS[group]
     literature = LITERATURE_DF[LITERATURE_DF["pubmed"].isin(papers)]
     return flask.render_template(
         "group.html",
@@ -217,7 +231,8 @@ def get_entity(curie: str) -> str:
 def get_paper(pubmed: str) -> str:
     """Get a page for a paper."""
     row = LITERATURE_DF[LITERATURE_DF["pubmed"] == pubmed].iloc[0].to_dict()
-    return flask.render_template("paper.html", data=row)
+    conditions = CONDITIONS_DF[CONDITIONS_DF["pubmed"] == pubmed]
+    return flask.render_template("paper.html", data=row, conditions=conditions)
 
 
 if __name__ == "__main__":

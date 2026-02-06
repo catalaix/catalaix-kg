@@ -7,7 +7,12 @@
     <dt>PubMed</dt>
     <dd><a href="https://semantic.farm/pubmed:{{ data['pubmed'] }}">{{ data['pubmed'] }}</a></dd>
     <dt>Year</dt>
-    <dd>{{ data['year'] }}</dd>
+    <dd>{{ data['date'] }}</dd>
+    <dt>Abstract</dt>
+    <dd>{{ data['abstract'] }}</dd>
 </dl>
+
+<h3>Experiments</h3>
+{{ experiments_table(conditions, show_chemist=True, show_group=True, show_reference=False) }}
 
 {% endblock %}
