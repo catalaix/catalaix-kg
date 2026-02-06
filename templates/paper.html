@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ data['title'] }}</h2>
+
+<dl>
+    <dt>PubMed</dt>
+    <dd><a href="https://semantic.farm/pubmed:{{ data['pubmed'] }}">{{ data['pubmed'] }}</a></dd>
+    <dt>Year</dt>
+    <dd>{{ data['date'] }}</dd>
+    <dt>Abstract</dt>
+    <dd>{{ data['abstract'] }}</dd>
+</dl>
+
+<h3>Experiments</h3>
+{{ experiments_table(conditions, show_chemist=True, show_group=True, show_reference=False) }}
+
+<h3>Citations</h3>
+<p>This article cites the following</p>
+{{ literature_table(citations) }}
+
+{% endblock %}

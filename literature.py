@@ -81,13 +81,18 @@ def main(use_pubmed: bool = True) -> None:
     )
 
     with safe_open_writer(PAPERS_TSV_PATH) as writer:
-        writer.writerow(["pubmed", "year", "title", "professors"])
+        writer.writerow(
+            ["pubmed", "doi", "date", "title", "professors", "types", "abstract"]
+        )
         writer.writerows(
             (
                 article.pubmed,
-                article.date_published.year if article.date_published else None,
+                _get_doi(article) or "",
+                article.date_published,
                 article.title,
                 ",".join(sorted(pubmed_ids.get(str(article.pubmed), []))),
+                ",".join(article.type_mesh_ids),
+                article.get_abstract(),
             )
             for article in articles
         )
