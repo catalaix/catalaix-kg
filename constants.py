@@ -12,3 +12,4 @@ CHEMICAL_HIERARCHY_PATH = CURATION_DIR.joinpath("chemical_hierarchy.tsv")
 
 CACHE_DIR = HERE.joinpath("cache")
 PAPERS_PATH = CACHE_DIR.joinpath("literature.tsv")
+CITATIONS_PATH = CACHE_DIR.joinpath("citations.tsv")

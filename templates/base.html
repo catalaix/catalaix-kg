@@ -1,3 +1,26 @@
+{% macro literature_table(literature) %}
+<table class="table table-striped table-responsive">
+    <thead>
+    <tr>
+        <th scope="col">PubMed</th>
+        <th scope="col">Date</th>
+        <th scope="col">Title</th>
+        <th scope="col">Is Review?</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%- for _, row in literature.iterrows() %}
+    <tr>
+        <td><a href="{{ url_for('get_paper', pubmed=row['pubmed']) }}">{{ row['pubmed'] }}</a></td>
+        <td>{{ row['date'] }}</td>
+        <td>{{ row['title'] }}</td>
+        <td>{{ row['is_review'] }}</td>
+    </tr>
+    {%- endfor %}
+    </tbody>
+</table>
+{% endmacro %}
+
 {% macro molecule_card(endpoint, curie, name) %}
 <div class="col-6 col-md-2">
     <a href="{{ url_for(endpoint, curie=curie) }}" style="text-decoration: none">

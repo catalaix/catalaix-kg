@@ -23,6 +23,7 @@ from constants import (
     CLOSED_LOOPS_PATH,
     CHEMICAL_HIERARCHY_PATH,
     PAPERS_PATH,
+    CITATIONS_PATH,
 )
 from draw import draw_bytes
 
@@ -98,6 +99,13 @@ CATALYST_GROUPING = CONDITIONS_DF[
 
 SUBSTRATE_GROUPING = REACTIONS_DF.groupby(["input", "input name"])
 PRODUCT_GROUPING = REACTIONS_DF.groupby(["output", "output name"])
+
+CITATIONS_DF = pd.read_csv(
+    CITATIONS_PATH, sep="\t", dtype=str, header=None, names=["source", "target"]
+)
+CITATIONS: defaultdict[str, set[str]] = defaultdict(set)
+for source, target in CITATIONS_DF.values:
+    CITATIONS[source].add(target)
 
 
 @app.route("/")
@@ -232,7 +240,11 @@ def get_paper(pubmed: str) -> str:
     """Get a page for a paper."""
     row = LITERATURE_DF[LITERATURE_DF["pubmed"] == pubmed].iloc[0].to_dict()
     conditions = CONDITIONS_DF[CONDITIONS_DF["pubmed"] == pubmed]
-    return flask.render_template("paper.html", data=row, conditions=conditions)
+    citation_list = CITATIONS.get(pubmed, [])
+    citations = LITERATURE_DF[LITERATURE_DF["pubmed"].isin(citation_list)]
+    return flask.render_template(
+        "paper.html", data=row, conditions=conditions, citations=citations
+    )
 
 
 if __name__ == "__main__":
